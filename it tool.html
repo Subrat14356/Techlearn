@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Systems & IT Development</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2 i {
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .tip-card {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 25px;
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tip-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tip-card h3 i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .app-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-top: 3px solid var(--secondary-color);
+        }
+        
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .app-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .software-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .software-card {
+            flex: 1 1 300px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .software-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .software-card h3 i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        .software-card ul {
+            list-style-position: inside;
+        }
+        
+        .software-card li {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .quiz-btn-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .quiz-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .quiz-btn:hover {
+            background-color: #d33426;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .quiz-btn i {
+            margin-left: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background-color: var(--dark-color);
+            color: white;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+        
+        /* Quiz Modal Styles */
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .quiz-container {
+            background-color: white;
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .close-quiz {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+        
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .quiz-header h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .quiz-progress {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .option {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #e8f0fe;
+        }
+        
+        .option.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .option.correct {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .option.incorrect {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .quiz-btn-nav {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .prev-btn {
+            background-color: var(--light-color);
+        }
+        
+        .next-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .quiz-btn-nav:hover {
+            opacity: 0.9;
+        }
+        
+        .quiz-btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .quiz-results {
+            text-align: center;
+            display: none;
+        }
+        
+        .quiz-results h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .restart-quiz {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .restart-quiz:hover {
+            background-color: #2d9249;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .tips-grid, .applications-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-container {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-laptop-code"></i> Information Systems & IT Development</h1>
+            <p class="subtitle">Essential knowledge for modern technology professionals and enthusiasts</p>
+        </header>
+        
+        <div class="section">
+            <h2><i class="fas fa-lightbulb"></i> Accurate Tips</h2>
+            <p>We all benefit from a few tips. Any content we find useful can help make computer systems more effective. These tips range from basic computer protection to advanced IT solutions.</p>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h3><i class="fas fa-shield-alt"></i> Basic Protection</h3>
+                    <p>Always use strong passwords and enable two-factor authentication for important accounts to enhance security.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3><i class="fas fa-cloud-upload-alt"></i> Regular Backups</h3>
+                    <p>Maintain regular backups of important data using cloud storage or external drives to prevent data loss.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3><i class="fas fa-sync-alt"></i> Software Updates</h3>
+                    <p>Keep all software and operating systems updated to ensure you have the latest security patches.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-eye"></i> Looking to the Future</h2>
+            <p>Information systems play a crucial role in career development. Guidelines for IT professionals help them grow and contribute effectively to society.</p>
+            <p>Continuous learning and adaptation to new technologies are essential for long-term success in the IT field.</p>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-user-tie"></i> IT Career Development</h2>
+            <p>The development of information systems involves research, technical skills, and continuous learning. A strong IT career requires innovation and problem-solving skills.</p>
+            <p>Key aspects include specialization in emerging technologies, obtaining relevant certifications, and building a professional network.</p>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-mobile-alt"></i> Applications of IT</h2>
+            <p>Information technology has numerous practical applications that impact our daily lives and work environments.</p>
+            
+            <div class="applications-grid">
+                <div class="app-card">
+                    <i class="fas fa-shield-virus"></i>
+                    <h3>Free Anti-Virus Programs</h3>
+                    <p>Protects computers from threats and malware attacks.</p>
+                </div>
+                
+                <div class="app-card">
+                    <i class="fas fa-blog"></i>
+                    <h3>Creating Blogs</h3>
+                    <p>Build a blog on WordPress for free and share your ideas.</p>
+                </div>
+                
+                <div class="app-card">
+                    <i class="fas fa-file-word"></i>
+                    <h3>Google Docs</h3>
+                    <p>Create and edit documents online from anywhere.</p>
+                </div>
+                
+                <div class="app-card">
+                    <i class="fas fa-film"></i>
+                    <h3>Online Entertainment</h3>
+                    <p>Watch TV programs, movies, and more on streaming platforms.</p>
+                </div>
+                
+                <div class="app-card">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>Gaming</h3>
+                    <p>Play online games on PCs, tablets, or mobiles.</p>
+                </div>
+                
+                <div class="app-card">
+                    <i class="fas fa-vr-cardboard"></i>
+                    <h3>Head-Mounted Displays</h3>
+                    <p>Immersive virtual reality experiences for gaming and education.</p>
+                </div>
+                
+                <div class="app-card">
+                    <i class="fas fa-cloud"></i>
+                    <h3>Cloud Storage</h3>
+                    <p>Store and transfer large files securely online.</p>
+                </div>
+                
+                <div class="app-card">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>Mobile Office</h3>
+                    <p>Work from anywhere with mobile office apps.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-code"></i> Understanding Programs and Software</h2>
+            <p><strong>What is a program?</strong> A computer program is a sequence of instructions executed by a computer to perform specific tasks.</p>
+            <p><strong>What is software?</strong> Software is another name for a program. It is a set of instructions that tell a computer how to process data and perform operations.</p>
+            
+            <div class="software-types">
+                <div class="software-card">
+                    <h3><i class="fas fa-cogs"></i> System Software</h3>
+                    <p>Manages hardware and system resources:</p>
+                    <ul>
+                        <li>Operating systems (Windows, macOS, Linux)</li>
+                        <li>Device drivers</li>
+                        <li>Utilities (disk cleaners, antivirus)</li>
+                        <li>Firmware</li>
+                    </ul>
+                </div>
+                
+                <div class="software-card">
+                    <h3><i class="fas fa-window-restore"></i> Application Software</h3>
+                    <p>Designed for users to perform specific tasks:</p>
+                    <ul>
+                        <li>Word processors</li>
+                        <li>Web browsers</li>
+                        <li>Media players</li>
+                        <li>Games</li>
+                        <li>Business applications</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quiz-btn-container">
+            <button class="quiz-btn" id="startQuiz">
+                Take IT Knowledge Quiz <i class="fas fa-question-circle"></i>
+            </button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 Information Systems & IT Development. All rights reserved.</p>
+    </footer>
+    
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-container">
+            <span class="close-quiz" id="closeQuiz">&times;</span>
+            
+            <div class="quiz-header">
+                <h2><i class="fas fa-laptop-code"></i> IT Knowledge Quiz</h2>
+                <p>Test your understanding of information systems and IT development</p>
+            </div>
+            
+            <div class="quiz-progress" id="quizProgress">
+                Question 1 of 10
+            </div>
+            
+            <div class="question-container" id="questionContainer">
+                <div class="question" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+            
+            <div class="quiz-navigation">
+                <button class="quiz-btn-nav prev-btn" id="prevBtn" disabled>
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button class="quiz-btn-nav next-btn" id="nextBtn">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <div class="quiz-results" id="quizResults">
+                <h3>Quiz Completed!</h3>
+                <div class="score" id="quizScore"></div>
+                <p id="quizFeedback"></p>
+                <button class="restart-quiz" id="restartQuiz">
+                    <i class="fas fa-redo"></i> Take Quiz Again
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Quiz Data
+        const quizQuestions = [
+            {
+                question: "Which of these is NOT mentioned as a benefit of information systems in career development?",
+                options: [
+                    "Continuous learning opportunities",
+                    "Specialization in emerging technologies",
+                    "Guaranteed high salary",
+                    "Professional networking"
+                ],
+                answer: 2
+            },
+            {
+                question: "What is the primary purpose of system software?",
+                options: [
+                    "To perform specific user tasks",
+                    "To manage hardware and system resources",
+                    "To create documents and presentations",
+                    "To provide entertainment"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which of these is an example of application software?",
+                options: [
+                    "Windows operating system",
+                    "Device drivers",
+                    "Word processor",
+                    "Disk cleanup utility"
+                ],
+                answer: 2
+            },
+            {
+                question: "What is the main advantage of cloud storage mentioned in the content?",
+                options: [
+                    "Free entertainment",
+                    "Secure storage and transfer of large files",
+                    "Virtual reality experiences",
+                    "Creating blogs"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which of these is NOT listed as an IT application?",
+                options: [
+                    "Online gaming",
+                    "Mobile office apps",
+                    "Cryptocurrency mining",
+                    "Virtual reality headsets"
+                ],
+                answer: 2
+            },
+            {
+                question: "What is the definition of a computer program?",
+                options: [
+                    "The physical components of a computer",
+                    "A sequence of instructions executed by a computer",
+                    "The data stored on a computer",
+                    "The user interface of an application"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which tip is specifically mentioned for basic computer protection?",
+                options: [
+                    "Regular software updates",
+                    "Using strong passwords and two-factor authentication",
+                    "Creating daily backups",
+                    "Playing online games"
+                ],
+                answer: 1
+            },
+            {
+                question: "What platform is suggested for creating free blogs?",
+                options: [
+                    "Google Docs",
+                    "WordPress",
+                    "YouTube",
+                    "Facebook"
+                ],
+                answer: 1
+            },
+            {
+                question: "What is essential for long-term success in IT according to the content?",
+                options: [
+                    "Focusing only on one technology",
+                    "Continuous learning and adaptation",
+                    "Avoiding certifications",
+                    "Working only in large companies"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which of these is a characteristic of application software?",
+                options: [
+                    "Manages computer hardware",
+                    "Provides user interfaces for specific tasks",
+                    "Controls basic computer operations",
+                    "Handles low-level system functions"
+                ],
+                answer: 1
+            }
+        ];
+        
+        // Quiz Variables
+        let currentQuestion = 0;
+        let userAnswers = Array(quizQuestions.length).fill(null);
+        let score = 0;
+        
+        // DOM Elements
+        const quizModal = document.getElementById('quizModal');
+        const closeQuizBtn = document.getElementById('closeQuiz');
+        const startQuizBtn = document.getElementById('startQuiz');
+        const quizProgress = document.getElementById('quizProgress');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const quizResults = document.getElementById('quizResults');
+        const quizScore = document.getElementById('quizScore');
+        const quizFeedback = document.getElementById('quizFeedback');
+        const restartQuizBtn = document.getElementById('restartQuiz');
+        const questionContainer = document.getElementById('questionContainer');
+        
+        // Event Listeners
+        startQuizBtn.addEventListener('click', startQuiz);
+        closeQuizBtn.addEventListener('click', closeQuiz);
+        prevBtn.addEventListener('click', prevQuestion);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartQuizBtn.addEventListener('click', restartQuiz);
+        
+        // Start Quiz Function
+        function startQuiz() {
+            currentQuestion = 0;
+            userAnswers = Array(quizQuestions.length).fill(null);
+            score = 0;
+            quizResults.style.display = 'none';
+            questionContainer.style.display = 'block';
+            updateQuestion();
+            quizModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close Quiz Function
+        function closeQuiz() {
+            quizModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Update Question Function
+        function updateQuestion() {
+            const question = quizQuestions[currentQuestion];
+            quizProgress.textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+            questionText.textContent = question.question;
+            
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                if (userAnswers[currentQuestion] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === quizQuestions.length - 1) {
+                nextBtn.textContent = 'Submit Quiz';
+            } else {
+                nextBtn.textContent = 'Next';
+            }
+        }
+        
+        // Select Option Function
+        function selectOption(optionIndex) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            options[optionIndex].classList.add('selected');
+            userAnswers[currentQuestion] = optionIndex;
+        }
+        
+        // Previous Question Function
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                updateQuestion();
+            }
+        }
+        
+        // Next Question Function
+        function nextQuestion() {
+            if (userAnswers[currentQuestion] === null && currentQuestion !== quizQuestions.length - 1) {
+                alert('Please select an answer before proceeding.');
+                return;
+            }
+            
+            if (currentQuestion < quizQuestions.length - 1) {
+                currentQuestion++;
+                updateQuestion();
+            } else {
+                submitQuiz();
+            }
+        }
+        
+        // Submit Quiz Function
+        function submitQuiz() {
+            // Calculate score
+            score = 0;
+            for (let i = 0; i < quizQuestions.length; i++) {
+                if (userAnswers[i] === quizQuestions[i].answer) {
+                    score++;
+                }
+            }
+            
+            // Display results
+            quizScore.textContent = `${score}/${quizQuestions.length}`;
+            
+            // Provide feedback based on score
+            const percentage = (score / quizQuestions.length) * 100;
+            if (percentage >= 80) {
+                quizFeedback.textContent = 'Excellent! You have a comprehensive understanding of IT systems.';
+            } else if (percentage >= 60) {
+                quizFeedback.textContent = 'Good job! You have solid IT knowledge with some areas to review.';
+            } else if (percentage >= 40) {
+                quizFeedback.textContent = 'Not bad! Consider studying the material more to improve your knowledge.';
+            } else {
+                quizFeedback.textContent = 'Keep learning! Review the information systems basics and try again.';
+            }
+            
+            // Show results and hide question
+            questionContainer.style.display = 'none';
+            quizResults.style.display = 'block';
+        }
+        
+        // Restart Quiz Function
+        function restartQuiz() {
+            currentQuestion = 0;
+            userAnswers = Array(quizQuestions.length).fill(null);
+            score = 0;
+            quizResults.style.display = 'none';
+            questionContainer.style.display = 'block';
+            updateQuestion();
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === quizModal) {
+                closeQuiz();
+            }
+        });
+    </script>
+</body>
+</html>

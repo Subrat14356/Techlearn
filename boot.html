@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS-DOS Booting Process</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --danger: #f72585;
+            --success: #4cc9f0;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --dos-green: #00aa00;
+            --dos-black: #000000;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            line-height: 1.7;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: var(--dos-green);
+            background-color: var(--dos-black);
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: var(--accent);
+            text-align: center;
+            margin: 30px 0 40px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--dos-green);
+        }
+        
+        h1 i {
+            margin-right: 15px;
+            color: var(--accent);
+        }
+        
+        h2 {
+            color: var(--success);
+            margin: 30px 0 15px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 25px 0 10px;
+            font-size: 1.3rem;
+        }
+        
+        .section {
+            background-color: rgba(0, 170, 0, 0.05);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 3px solid var(--dos-green);
+            box-shadow: 0 0 10px rgba(0, 170, 0, 0.1);
+        }
+        
+        p, li {
+            margin: 12px 0;
+            font-size: 1.1rem;
+            color: var(--dos-green);
+        }
+        
+        ul {
+            padding-left: 25px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .boot-step {
+            background-color: rgba(0, 170, 0, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .boot-step h3 {
+            margin-top: 0;
+            color: var(--success);
+        }
+        
+        .boot-step p {
+            margin: 10px 0;
+        }
+        
+        .highlight {
+            font-weight: bold;
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .type-box {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .boot-type {
+            flex: 1;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: rgba(0, 170, 0, 0.1);
+            border: 1px solid var(--dos-green);
+        }
+        
+        .boot-type h3 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+        
+        #quizBtn {
+            display: block;
+            margin: 40px auto;
+            padding: 12px 25px;
+            background-color: var(--dos-green);
+            color: var(--dos-black);
+            border: none;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #quizBtn:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        #quizBtn i {
+            margin-right: 8px;
+        }
+        
+        .quiz-container {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            border-radius: 5px;
+            margin: 30px 0;
+            border: 1px solid var(--dos-green);
+        }
+        
+        .quiz-container h2 {
+            color: var(--accent);
+            margin-top: 0;
+            text-align: center;
+        }
+        
+        .quiz-question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dotted var(--dos-green);
+        }
+        
+        .quiz-question:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 15px;
+        }
+        
+        .quiz-question p {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        
+        .quiz-options {
+            margin-left: 15px;
+        }
+        
+        .quiz-options label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            background-color: rgba(0, 170, 0, 0.1);
+        }
+        
+        .quiz-options label:hover {
+            background-color: rgba(0, 170, 0, 0.2);
+        }
+        
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: var(--dos-green);
+        }
+        
+        .submit-btn {
+            padding: 10px 20px;
+            background-color: var(--dos-green);
+            color: var(--dos-black);
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .result {
+            margin-top: 25px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 3px;
+            display: none;
+            text-align: center;
+            font-size: 1.1rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .correct {
+            background-color: rgba(0, 170, 0, 0.2);
+            color: var(--dos-green);
+            border: 1px solid var(--dos-green);
+        }
+        
+        .incorrect {
+            background-color: rgba(247, 37, 133, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .type-box {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-power-off"></i> MS-DOS Booting Process</h1>
+    
+    <div class="section">
+        <h2><i class="fas fa-question-circle"></i> What is Booting?</h2>
+        <p>Booting is the process of loading the computer's operating system into main memory (RAM). Once this process is completed, the system becomes operational and ready for use.</p>
+    </div>
+    
+    <div class="section">
+        <h2><i class="fas fa-list-alt"></i> Types of Booting</h2>
+        <div class="type-box">
+            <div class="boot-type">
+                <h3><i class="fas fa-snowflake"></i> Cold Booting</h3>
+                <p>When a computer is powered on from an OFF state. This performs a full initialization of all hardware components.</p>
+            </div>
+            <div class="boot-type">
+                <h3><i class="fas fa-sync-alt"></i> Warm Booting</h3>
+                <p>When a computer is restarted without turning off the power (using Ctrl+Alt+Del or reset button). This skips some hardware tests.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2><i class="fas fa-list-ol"></i> Booting Process Steps</h2>
+        <p>The MS-DOS booting process follows this sequential order:</p>
+        <ol>
+            <li><span class="highlight">POST</span> (Power-On Self Test)</li>
+            <li><span class="highlight">BSL</span> (Bootstrap Loader)</li>
+            <li><span class="highlight">Boot Sector</span> loading</li>
+            <li><span class="highlight">MS-DOS.SYS</span> loading</li>
+            <li><span class="highlight">CONFIG.SYS</span> processing</li>
+            <li><span class="highlight">COMMAND.COM</span> loading</li>
+            <li><span class="highlight">AUTOEXEC.BAT</span> execution</li>
+        </ol>
+    </div>
+    
+    <div class="section">
+        <h2><i class="fas fa-cogs"></i> Detailed Booting Process</h2>
+        
+        <div class="boot-step">
+            <h3>1. POST (Power-On Self Test)</h3>
+            <p>When the computer is powered on, the first step is called POST. It checks whether all hardware components, including RAM, storage, and connected devices, are functioning properly.</p>
+            <p>POST is performed by the BIOS (Basic Input/Output System) stored in ROM. If errors are found, the system may emit beep codes or display error messages.</p>
+        </div>
+        
+        <div class="boot-step">
+            <h3>2. BSL (Bootstrap Loader)</h3>
+            <p>After POST, the Bootstrap Loader (BSL) takes over. This is a small program stored in the computer's ROM or BIOS.</p>
+            <p>The BSL checks for bootable devices in the order specified in BIOS settings (typically floppy, then hard disk, then CD-ROM). It looks for bootable system files and prepares them for execution.</p>
+        </div>
+        
+        <div class="boot-step">
+            <h3>3. Boot Sector</h3>
+            <p>The boot sector is a dedicated section (first sector) of the bootable storage device (hard disk or floppy disk) that contains essential code for loading the operating system.</p>
+            <p>In MS-DOS, the boot sector contains:</p>
+            <ul>
+                <li>Disk parameter table</li>
+                <li>Loader program to load IO.SYS/MS-DOS.SYS</li>
+                <li>Error messages (for non-bootable disks)</li>
+            </ul>
+        </div>
+        
+        <div class="boot-step">
+            <h3>4. MS-DOS.SYS (or IO.SYS)</h3>
+            <p>This file contains the core operating system functions necessary for managing hardware and software interactions.</p>
+            <p>MS-DOS.SYS performs these key functions:</p>
+            <ul>
+                <li>Initializes the DOS kernel</li>
+                <li>Loads device drivers</li>
+                <li>Sets up basic system functions</li>
+                <li>Processes CONFIG.SYS</li>
+            </ul>
+        </div>
+        
+        <div class="boot-step">
+            <h3>5. CONFIG.SYS</h3>
+            <p>This configuration file is used to customize system settings:</p>
+            <ul>
+                <li>Loads device drivers (<span class="highlight">DEVICE=</span> statements)</li>
+                <li>Configures memory management</li>
+                <li>Sets file and buffer handling parameters</li>
+                <li>Defines system-wide settings</li>
+            </ul>
+            <p>CONFIG.SYS is optional but commonly used to optimize system performance.</p>
+        </div>
+        
+        <div class="boot-step">
+            <h3>6. COMMAND.COM</h3>
+            <p>The command interpreter that provides the user interface for MS-DOS. It has three main components:</p>
+            <ul>
+                <li>Resident portion (always in memory)</li>
+                <li>Initialization portion</li>
+                <li>Transient portion (can be overwritten by large programs)</li>
+            </ul>
+            <p>COMMAND.COM handles:</p>
+            <ul>
+                <li>Command execution</li>
+                <li>Batch file processing</li>
+                <li>Internal commands (DIR, COPY, DEL, etc.)</li>
+            </ul>
+        </div>
+        
+        <div class="boot-step">
+            <h3>7. AUTOEXEC.BAT</h3>
+            <p>This automatic executable batch file runs at startup, executing a set of predefined DOS commands. Typical uses include:</p>
+            <ul>
+                <li>Setting environment variables (<span class="highlight">PATH</span>, <span class="highlight">PROMPT</span>)</li>
+                <li>Loading TSR (Terminate-and-Stay-Resident) programs</li>
+                <li>Configuring devices</li>
+                <li>Running startup applications</li>
+            </ul>
+            <p>Like CONFIG.SYS, AUTOEXEC.BAT is optional but commonly used to customize the user environment.</p>
+        </div>
+    </div>
+    
+    <button id="quizBtn"><i class="fas fa-question-circle"></i> Take MS-DOS Booting Quiz</button>
+    
+    <div class="quiz-container" id="quizContainer">
+        <h2><i class="fas fa-graduation-cap"></i> MS-DOS Booting Quiz</h2>
+        
+        <div class="quiz-question">
+            <p>1. What is the first step in the MS-DOS booting process?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q1" value="a"> Loading COMMAND.COM</label>
+                <label><input type="radio" name="q1" value="b"> Power-On Self Test (POST)</label>
+                <label><input type="radio" name="q1" value="c"> Executing AUTOEXEC.BAT</label>
+                <label><input type="radio" name="q1" value="d"> Processing CONFIG.SYS</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>2. What is the difference between cold booting and warm booting?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q2" value="a"> Cold booting is faster than warm booting</label>
+                <label><input type="radio" name="q2" value="b"> Warm booting turns the power off completely</label>
+                <label><input type="radio" name="q2" value="c"> Cold booting performs full hardware initialization</label>
+                <label><input type="radio" name="q2" value="d"> There is no difference</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>3. Which file contains the core operating system functions in MS-DOS?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q3" value="a"> COMMAND.COM</label>
+                <label><input type="radio" name="q3" value="b"> AUTOEXEC.BAT</label>
+                <label><input type="radio" name="q3" value="c"> MS-DOS.SYS</label>
+                <label><input type="radio" name="q3" value="d"> CONFIG.SYS</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>4. What is the purpose of the Bootstrap Loader (BSL)?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q4" value="a"> To test all hardware components</label>
+                <label><input type="radio" name="q4" value="b"> To load and execute COMMAND.COM</label>
+                <label><input type="radio" name="q4" value="c"> To find and load bootable system files</label>
+                <label><input type="radio" name="q4" value="d"> To process AUTOEXEC.BAT</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>5. Which file would you modify to load device drivers at startup?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q5" value="a"> COMMAND.COM</label>
+                <label><input type="radio" name="q5" value="b"> MS-DOS.SYS</label>
+                <label><input type="radio" name="q5" value="c"> CONFIG.SYS</label>
+                <label><input type="radio" name="q5" value="d"> AUTOEXEC.BAT</label>
+            </div>
+        </div>
+        
+        <button class="submit-btn" id="submitQuiz"><i class="fas fa-paper-plane"></i> Submit Answers</button>
+        <div class="result" id="quizResult"></div>
+    </div>
+
+    <script>
+        document.getElementById('quizBtn').addEventListener('click', function() {
+            const quizContainer = document.getElementById('quizContainer');
+            if (quizContainer.style.display === 'block') {
+                quizContainer.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-question-circle"></i> Take MS-DOS Booting Quiz';
+            } else {
+                quizContainer.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-times"></i> Close Quiz';
+                window.scrollTo({
+                    top: quizContainer.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        document.getElementById('submitQuiz').addEventListener('click', function() {
+            const answers = {
+                q1: 'b',
+                q2: 'c',
+                q3: 'c',
+                q4: 'c',
+                q5: 'c'
+            };
+            
+            let score = 0;
+            const totalQuestions = Object.keys(answers).length;
+            
+            for (let question in answers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedOption && selectedOption.value === answers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const resultElement = document.getElementById('quizResult');
+            resultElement.style.display = 'block';
+            
+            let message = '';
+            if (percentage === 100) {
+                message = `🎉 Perfect! You scored ${score}/${totalQuestions} (${percentage}%)! 🎉`;
+            } else if (percentage >= 75) {
+                message = `👍 Great job! You scored ${score}/${totalQuestions} (${percentage}%)!`;
+            } else if (percentage >= 50) {
+                message = `😊 Good try! You scored ${score}/${totalQuestions} (${percentage}%). Keep learning!`;
+            } else {
+                message = `📚 You scored ${score}/${totalQuestions} (${percentage}%). Review the material and try again!`;
+            }
+            
+            resultElement.textContent = message;
+            resultElement.className = percentage >= 75 ? 'result correct' : 'result incorrect';
+            
+            // Scroll to result
+            resultElement.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

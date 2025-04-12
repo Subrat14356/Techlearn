@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internet Features and Networking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            color: var(--secondary-color);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        h3 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        th, td {
+            padding: 8px 7px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .icon {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
+        .quiz-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .quiz-btn:hover {
+            transform: scale(1.1);
+            background-color: #c0392b;
+        }
+        
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .quiz-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            position: relative;
+            animation: modalopen 0.5s;
+        }
+        
+        @keyframes modalopen {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .close-btn:hover {
+            color: #333;
+        }
+        
+        .question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .options {
+            margin-top: 1rem;
+        }
+        
+        .option {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #eee;
+        }
+        
+        .option.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .option.correct {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .option.incorrect {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .result {
+            margin-top: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-content {
+                margin: 10% auto;
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>><i class="fas fa-globe icon"></i>Internet Features & Networking</h1>
+            <p>Comprehensive guide to internet technologies and network devices</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="card">
+            <h2><i class="fas fa-network-wired icon"></i>Internet Features</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    <h3>Speed</h3>
+                    <p>P: 100 Mbps</p>
+                    <p>PTS: 200 Mbps</p>
+                    <p>Backbone speed: 27,2115 Mbps</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
+                    <h3>Network Types</h3>
+                    <p>Token Ring</p>
+                    <p>Internet</p>
+                    <p>Backbone Network</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-star"></i></div>
+                    <h3>Key Features</h3>
+                    <ul>
+                        <li>Geographic distribution</li>
+                        <li>Robust architecture</li>
+                        <li>Near-light speed</li>
+                        <li>Universal access</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Growth & Advantages</h3>
+                    <ul>
+                        <li>Growth rate (size, power, functionality)</li>
+                        <li>Digital advantages</li>
+                        <li>Free of speed limitations</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-wifi"></i></div>
+                    <h3>Web Features</h3>
+                    <ul>
+                        <li>Digital data</li>
+                        <li>Usenet</li>
+                        <li>Newsgroup features</li>
+                        <li>DNS: Domain Name System</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2><i class="fas fa-plug icon"></i>Internet Access</h2>
+            <p>Internet access is the process of connecting devices to the internet.</p>
+            
+            <h3><i class="fas fa-list icon"></i>Types of Internet Connections:</h3>
+            <ul>
+                <li><strong>Dial-up Connection</strong>
+                    <ul>
+                        <li>Transmits analog signals over an ordinary telephone line.</li>
+                        <li>Requires dialing a local ISP (Internet Service Provider).</li>
+                        <li>Only one service can be used at a time (either internet or phone call).</li>
+                        <li>Only one computer can be connected.</li>
+                    </ul>
+                </li>
+                <li><strong>Direct Internet Connection</strong>
+                    <ul>
+                        <li>Allows a computer to send and receive internet data packets.</li>
+                        <li>Requires special software that supports the TCP/IP protocol.</li>
+                    </ul>
+                </li>
+                <li><strong>Broadband Connection</strong>
+                    <ul>
+                        <li>Provides high-speed internet access.</li>
+                        <li>Supports multiple devices simultaneously.</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <h3><i class="fas fa-building icon"></i>Direct Internet Connections</h3>
+            <p>Two companies offer direct internet connections:</p>
+            <ul>
+                <li>IBM - Lotur Noel (email)</li>
+            </ul>
+            
+            <h4>Direct Connection Through Router</h4>
+            <p>The direct connection is established through a router.</p>
+            
+            <h3><i class="fas fa-cogs icon"></i>Direct Internet Access Processes</h3>
+            <p>Direct Internet Access is Achieved by Two Processes:</p>
+            <ol>
+                <li><strong>Dial-up Connection (TP)</strong>
+                    <ul>
+                        <li>Uses a modem and telephone lines for internet access.</li>
+                        <li>Special software supporting SLIP (Serial Line Internet Protocol) or PPP (Point-to-Point Protocol) is required.</li>
+                        <li>SLIP: Serial Line Internet Protocol</li>
+                        <li>PPP: Point-to-Point Protocol</li>
+                    </ul>
+                </li>
+                <li><strong>LAN Connection</strong>
+                    <ul>
+                        <li>If a computer is connected to the LAN, it is directly linked to the network.</li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <h3><i class="fas fa-bolt icon"></i>Broadband Connection (LQ)</h3>
+            <ul>
+                <li>Refers to high-speed internet technology that transmits data at very high speeds.</li>
+                <li>Uses cables or mobile phone networks for communication.</li>
+                <li>Works by using a wide range of frequencies divided into channels, allowing internet data and telephone calls to happen simultaneously.</li>
+            </ul>
+            
+            <h3><i class="fas fa-satellite-dish icon"></i>Broadband Technologies</h3>
+            <p>Broadband includes various high-speed transmission technologies such as:</p>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-phone-alt"></i></div>
+                    <h4>DSL (Digital Subscriber Line)</h4>
+                    <p>Uses existing telephone lines for high-speed internet</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-tv"></i></div>
+                    <h4>Cable Modem</h4>
+                    <p>Uses cable television infrastructure</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h4>Optical Fiber</h4>
+                    <p>Uses light to transmit data at extremely high speeds</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-network-wired"></i></div>
+                    <h4>ISDN (Integrated Services Digital Network)</h4>
+                    <p>Digital telephone/telecommunications network</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-wifi"></i></div>
+                    <h4>Wireless</h4>
+                    <p>Wi-Fi, mobile networks, and other wireless technologies</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-satellite"></i></div>
+                    <h4>Satellite</h4>
+                    <p>Internet access via communication satellites</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h4>BPL (Broadband over Power Lines)</h4>
+                    <p>Internet over electrical power lines</p>
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-not-equal icon"></i>Difference Between Baseband and Broadband</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Baseband</th>
+                    <th>Broadband</th>
+                </tr>
+                <tr>
+                    <td>Type of Signal</td>
+                    <td>Uses digital signal</td>
+                    <td>Uses analog signal</td>
+                </tr>
+                <tr>
+                    <td>Multiplexing</td>
+                    <td>No frequency division multiplexing</td>
+                    <td>Uses frequency division multiplexing</td>
+                </tr>
+                <tr>
+                    <td>Transmission Direction</td>
+                    <td>Provides bidirectional transmission</td>
+                    <td>Supports unidirectional transmission</td>
+                </tr>
+                <tr>
+                    <td>Distance Coverage</td>
+                    <td>Works over short distances</td>
+                    <td>Works over long distances</td>
+                </tr>
+            </table>
+            
+            <h3><i class="fas fa-phone-alt icon"></i>DSL (Digital Subscriber Line)</h3>
+            <ul>
+                <li>It is a wired technology.</li>
+                <li>Data is transmitted using ordinary telephone lines.</li>
+                <li>Allows simultaneous transmission of internet data and voice data.</li>
+                <li>Provides data transmission speeds ranging from Kbps to Mbps.</li>
+            </ul>
+            
+            <h4>Internet Speed and Availability</h4>
+            <p>The internet speed and availability depend on the distance from the service provider.</p>
+            
+            <h4>Types of DSL Technology</h4>
+            <ol>
+                <li><strong>ADSL (Asymmetrical Digital Subscriber Line)</strong>
+                    <ul>
+                        <li>Commonly used by home users and businesses.</li>
+                        <li>Offers higher downstream (download) speeds compared to upstream speeds.</li>
+                        <li>Allows simultaneous telephone calls and internet service without interruption.</li>
+                    </ul>
+                </li>
+                <li><strong>SDSL (Symmetrical Digital Subscriber Line)</strong>
+                    <ul>
+                        <li>Used by businesses and organizations.</li>
+                        <li>Provides equal speeds for both downstream (download) and upstream (upload).</li>
+                        <li>Often used for video conferencing and other data-intensive applications.</li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <h3><i class="fas fa-tv icon"></i>Cable Modem</h3>
+            <ul>
+                <li>A cable modem is an external device used for internet access.</li>
+                <li>It is provided by cable operators to deliver internet services.</li>
+            </ul>
+            
+            <h4>Cable Modem Features</h4>
+            <ul>
+                <li>Uses a single cable for telephone and internet services.</li>
+                <li>Offers data transmission speeds up to 1.5 Mbps or more.</li>
+                <li>Multiple computers can be connected, but more users may slow the connection.</li>
+                <li>Supports simultaneous transmission of internet and TV data.</li>
+            </ul>
+            
+            <h3><i class="fas fa-lightbulb icon"></i>Optical Fiber Cable</h3>
+            <ul>
+                <li>Converts signals into light for high-speed data transmission.</li>
+                <li>Can transmit data across extremely thin fiber strands.</li>
+                <li>Provides higher downstream than upstream speeds.</li>
+                <li>Faster than DSL or cable modem connections.</li>
+                <li>Allows simultaneous voice and internet data transmission.</li>
+            </ul>
+            
+            <h3><i class="fas fa-network-wired icon"></i>Broadband Technologies</h3>
+            
+            <h4>Integrated Services Digital Network (ISDN)</h4>
+            <ul>
+                <li>An older technology that provides high-speed internet connection.</li>
+                <li>Uses an ordinary telephone line to connect to the internet.</li>
+                <li>Can transmit both voice and internet data simultaneously.</li>
+                <li>Allows multiple computers to be connected via a single line.</li>
+            </ul>
+            
+            <h4>Wireless Broadband</h4>
+            <ul>
+                <li>Connects home users or businesses via radio signals between the customer and service provider.</li>
+                <li>Can be either mobile or fixed.</li>
+                <li>Ideal for remote areas where DSL or cable modem services are unavailable.</li>
+                <li>Requires an antenna and modem to establish a connection.</li>
+                <li>Provides speeds comparable to DSL or cable modem.</li>
+                <li>Companies providing wireless broadband are known as Wireless Internet Service Providers (WISPs).</li>
+                <li>Typically offers speeds around 2 Mbps to unlicensed devices.</li>
+            </ul>
+            
+            <h5>Wireless Local Area Network</h5>
+            <ul>
+                <li>Provides seamless broadband access over short distances.</li>
+                <li>Uses Wi-Fi networks with unlicensed devices.</li>
+                <li>Designed for internet access in homes or businesses.</li>
+            </ul>
+            
+            <h4>Wireless Connectivity</h4>
+            <h5>Mobile Wireless</h5>
+            <ul>
+                <li>Mobile broadband services are provided by telecom service providers.</li>
+                <li>Primarily uses 3G technology, including:
+                    <ul>
+                        <li>HSDPA: Enables high-speed downloading.</li>
+                        <li>HSUPA: Facilitates high-speed uploading.</li>
+                    </ul>
+                </li>
+                <li>Speeds range from 100 kbps to several Mbps.</li>
+            </ul>
+            
+            <h4>Satellite Internet</h4>
+            <ul>
+                <li>Satellite technology provides connectivity for telephone and television services.</li>
+                <li>It can also offer broadband connections, especially in remote areas.</li>
+            </ul>
+            
+            <h4>BPL (Broadband over Power Line)</h4>
+            <ul>
+                <li>BPL delivers broadband using low and medium-voltage electric lines.</li>
+            </ul>
+            
+            <h3><i class="fas fa-server icon"></i>Internet Service Providers (ISP)</h3>
+            <ul>
+                <li>An ISP is a private company or government entity that provides internet services to individuals and organizations.</li>
+            </ul>
+            
+            <h4>Types of Internet Connections:</h4>
+            <ul>
+                <li>Direct Connection</li>
+                <li>Dial-up Connection</li>
+                <li>DSL (Digital Subscriber Line)</li>
+                <li>Wireless Internet</li>
+            </ul>
+            
+            <h3><i class="fas fa-broadcast-tower icon"></i>Broadcasting in Networking</h3>
+            <ul>
+                <li>Broadcasting is a communication process where one device sends signals, and other devices receive them.</li>
+            </ul>
+            
+            <h4>Types of Broadcasting</h4>
+            <ul>
+                <li>Radio Transmission</li>
+                <li>Television Transmission</li>
+                <li>Satellite Transmission</li>
+            </ul>
+            
+            <p>The broadcast IP address is 255.255.255.255.</p>
+        </section>
+        
+        <section class="card">
+            <h2><i class="fas fa-sitemap icon"></i>Network Models</h2>
+            
+            <h3><i class="fas fa-layer-group icon"></i>OSI Model (7 Layers)</h3>
+            <ol>
+                <li>Application Layer</li>
+                <li>Presentation Layer</li>
+                <li>Session Layer</li>
+                <li>Transport Layer</li>
+                <li>Network Layer</li>
+                <li>Data Link Layer</li>
+                <li>Physical Layer</li>
+            </ol>
+            
+            <h3><i class="fas fa-project-diagram icon"></i>TCP/IP Model (4 Layers)</h3>
+            <ol>
+                <li>Application Layer</li>
+                <li>Transport Layer</li>
+                <li>Internet Layer</li>
+                <li>Network Access Layer</li>
+            </ol>
+        </section>
+        
+        <section class="card">
+            <h2><i class="fas fa-network-wired icon"></i>Network Hardware Components</h2>
+            
+            <h3><i class="fas fa-ethernet icon"></i>Network Interface Card (NIC)</h3>
+            <ul>
+                <li>Also known as LAN Card or Ethernet Interface Card.</li>
+                <li>Provides a physical connection to the network.</li>
+                <li>Attaches the MAC address to data packets.</li>
+            </ul>
+            
+            <h3><i class="fas fa-hub icon"></i>HUB in Networking</h3>
+            <ul>
+                <li>A HUB is a communication device that acts as a central point in a star topology network.</li>
+                <li>Receives and forwards data.</li>
+                <li>Available in configurations of 4, 8, 12, or 24 ports.</li>
+                <li>Uses RJ-45 cables.</li>
+            </ul>
+            
+            <h4>Advantages of a HUB</h4>
+            <ul>
+                <li>✔ Low Cost – Affordable and easy to install.</li>
+                <li>✔ Connects Multiple Devices.</li>
+            </ul>
+            
+            <h4>Disadvantages of a HUB</h4>
+            <ul>
+                <li>❌ Extends Collision Domain.</li>
+                <li>❌ Does Not Filter Data.</li>
+            </ul>
+            
+            <h3><i class="fas fa-random icon"></i>Switch - A Network or Communication Device</h3>
+            <ul>
+                <li>A switch selects the port or circuit to send data packets to the next network segment.</li>
+                <li>It functions like a router.</li>
+                <li>It is an intelligent device.</li>
+                <li>It contains a bridging table to track hardware addresses.</li>
+                <li>It tracks MAC addresses of all connected devices.</li>
+                <li>It operates at the Data Link Layer of the OSI model.</li>
+                <li>Each port on a switch is a collision domain.</li>
+            </ul>
+            
+            <h4>Advantages of a Switch:</h4>
+            <ul>
+                <li>Limits the collision domain.</li>
+                <li>Filters data packets.</li>
+                <li>Keeps track of hardware addresses using a bridging table.</li>
+                <li>Can be configured to limit the broadcast domain.</li>
+            </ul>
+            
+            <h4>Disadvantages of a Switch:</h4>
+            <ul>
+                <li>More expensive than a hub.</li>
+                <li>Configuration is complex.</li>
+            </ul>
+            
+            <h3><i class="fas fa-not-equal icon"></i>Difference Between Hub and Switch</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Hub</th>
+                    <th>Switch</th>
+                </tr>
+                <tr>
+                    <td>Layer</td>
+                    <td>Physical Layer</td>
+                    <td>Data Link Layer</td>
+                </tr>
+                <tr>
+                    <td>Collision Domain</td>
+                    <td>Single for all ports</td>
+                    <td>Each port has a separate collision domain</td>
+                </tr>
+                <tr>
+                    <td>Data Transmission</td>
+                    <td>Broadcasts to all devices</td>
+                    <td>Sends data only to the intended device</td>
+                </tr>
+                <tr>
+                    <td>Speed</td>
+                    <td>Slow</td>
+                    <td>Faster</td>
+                </tr>
+                <tr>
+                    <td>Intelligence</td>
+                    <td>No intelligence, just repeats signals</td>
+                    <td>Smart device, manages MAC addresses</td>
+                </tr>
+                <tr>
+                    <td>Cost</td>
+                    <td>Cheaper</td>
+                    <td>More expensive</td>
+                </tr>
+            </table>
+            
+            <h3><i class="fas fa-signal icon"></i>Repeater - A Network Device</h3>
+            <ul>
+                <li>A Repeater is a network device used to amplify and regenerate weak signals.</li>
+                <li>It helps in creating long-distance networking.</li>
+                <li>It operates at the Physical Layer of the OSI model.</li>
+                <li>A multi-port repeater is known as a Hub.</li>
+            </ul>
+            
+            <h4>Basic Functions of a Repeater:</h4>
+            <ul>
+                <li>Receives weak signals.</li>
+                <li>Regenerates the signals to avoid collisions.</li>
+                <li>Transmits the signal to the next network segment.</li>
+            </ul>
+            
+            <h4>Advantages of a Repeater:</h4>
+            <ul>
+                <li>Can connect different types of media (cables).</li>
+                <li>Extends a network in terms of distance.</li>
+                <li>Does not introduce additional network traffic.</li>
+            </ul>
+            
+            <h4>Disadvantages of a Repeater:</h4>
+            <ul>
+                <li>Extends the collision domain.</li>
+                <li>Does not filter data packets.</li>
+                <li>Limits the number of repeaters in a network.</li>
+            </ul>
+            
+            <h3><i class="fas fa-bridge icon"></i>Bridge - A Network Device</h3>
+            <ul>
+                <li>A Bridge is a network device used to connect LANs that use the same protocol.</li>
+                <li>It operates at the Data Link Layer of the OSI model.</li>
+                <li>Uses a bridging table to track devices on each segment.</li>
+            </ul>
+            
+            <h4>Filtering and Spanning Tree Protocol (STP)</h4>
+            <ul>
+                <li>Filters data packets and determines whether to forward them to the next destination.</li>
+                <li>Uses Spanning Tree Protocol (STP) to examine data packets and prevent network loops.</li>
+            </ul>
+            
+            <h4>Advantages:</h4>
+            <ul>
+                <li>Limits the collision domain.</li>
+                <li>Can extend network distance.</li>
+                <li>Uses MAC addresses to filter traffic.</li>
+                <li>Can connect different types of media.</li>
+            </ul>
+            
+            <h4>Disadvantages:</h4>
+            <ul>
+                <li>Works only with the same type of protocol.</li>
+                <li>Broadcast packets cannot be filtered.</li>
+                <li>More expensive than a repeater.</li>
+                <li>Slower processing than a repeater due to additional packet processing.</li>
+            </ul>
+            
+            <h3><i class="fas fa-route icon"></i>Router - A Network Device</h3>
+            <ul>
+                <li>A Router is a network device used to find the best path to send data packets to the next network segment.</li>
+                <li>Operates at the Network Layer of the OSI model.</li>
+                <li>Works in LAN, MAN, and WAN environments.</li>
+                <li>Used to connect different types of computer networks.</li>
+                <li>Functions like a firewall.</li>
+                <li>Can change packet routes based on the network segment.</li>
+                <li>Maintains routing tables to select the best path.</li>
+            </ul>
+            
+            <h4>Router Features</h4>
+            <ul>
+                <li>Contains a routing table to keep track of network routes.</li>
+                <li>Static Routing is manually configured by the network administrator.</li>
+                <li>Dynamic Routing updates automatically when network topology changes.</li>
+                <li>Uses routing protocols to find the best path using special algorithms.</li>
+                <li>Helps in resource access by selecting the optimal path.</li>
+            </ul>
+            
+            <h4>Advantages:</h4>
+            <ul>
+                <li>Limits the collision domain.</li>
+                <li>Determines the best path for data transmission.</li>
+                <li>Filters broadcast messages.</li>
+                <li>Works in any environment (LAN, MAN, WAN).</li>
+                <li>Can connect different types of computer networks.</li>
+            </ul>
+            
+            <h4>Disadvantages:</h4>
+            <ul>
+                <li>More expensive than other network devices.</li>
+                <li>Requires the use of routable protocols.</li>
+                <li>Difficult to configure.</li>
+            </ul>
+            
+            <h3><i class="fas fa-door-open icon"></i>Gateway - A Network Device</h3>
+            <ul>
+                <li>A Gateway is an entry point to another network.</li>
+                <li>Functions as a host computer at the starting and ending points of a network.</li>
+                <li>Operates at all layers of the OSI model.</li>
+                <li>Used to connect heterogeneous networks.</li>
+            </ul>
+            
+            <h4>Types of Gateways</h4>
+            <p>There are different types of gateways used to connect networks, such as:</p>
+            <ol>
+                <li><strong>Address Gateway</strong>
+                    <ul>
+                        <li>Connects networks using the same protocol but with a different directory space.</li>
+                        <li>Example: Message handling service that connects different email systems.</li>
+                    </ul>
+                </li>
+                <li><strong>Protocol Gateway</strong>
+                    <ul>
+                        <li>Connects networks using different protocols.</li>
+                        <li>Translates secure protocols so the destination can understand them.</li>
+                    </ul>
+                </li>
+                <li><strong>Application Gateway</strong>
+                    <ul>
+                        <li>Translates applications such as an internet email server to a message server.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+    </div>
+    
+    <button class="quiz-btn" id="quizBtn"><i class="fas fa-question"></i></button>
+    
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-content">
+            <span class="close-btn" id="closeQuiz">&times;</span>
+            <h2><i class="fas fa-question-circle icon"></i>Networking Quiz</h2>
+            <div id="quizContainer"></div>
+            <button class="submit-btn" id="submitQuiz">Submit Quiz</button>
+            <div class="result" id="quizResult"></div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Internet Features & Networking Guide</p>
+            <p>Created with <i class="fas fa-heart" style="color: #e74c3c;"></i> for educational purposes</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Quiz data
+        const quizData = [
+            {
+                question: "What is the typical speed of a broadband backbone network?",
+                options: [
+                    "100 Mbps",
+                    "200 Mbps",
+                    "1 Gbps",
+                    "27,2115 Mbps"
+                ],
+                answer: 3
+            },
+            {
+                question: "Which of these is NOT a feature of the Internet?",
+                options: [
+                    "Geographic distribution",
+                    "Robust architecture",
+                    "Centralized control",
+                    "Universal access"
+                ],
+                answer: 2
+            },
+            {
+                question: "What protocol is used for dial-up connections?",
+                options: [
+                    "HTTP",
+                    "SLIP/PPP",
+                    "FTP",
+                    "SMTP"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which technology uses ordinary telephone lines for high-speed internet?",
+                options: [
+                    "Cable Modem",
+                    "DSL",
+                    "Optical Fiber",
+                    "Satellite"
+                ],
+                answer: 1
+            },
+            {
+                question: "What is the main difference between baseband and broadband?",
+                options: [
+                    "Baseband is wireless, broadband is wired",
+                    "Baseband uses digital signals, broadband uses analog signals",
+                    "Baseband is faster than broadband",
+                    "Broadband is only for television"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which type of DSL provides equal upload and download speeds?",
+                options: [
+                    "ADSL",
+                    "SDSL",
+                    "VDSL",
+                    "HDSL"
+                ],
+                answer: 1
+            },
+            {
+                question: "What layer of the OSI model do routers operate at?",
+                options: [
+                    "Physical Layer",
+                    "Data Link Layer",
+                    "Network Layer",
+                    "Transport Layer"
+                ],
+                answer: 2
+            },
+            {
+                question: "Which device extends the collision domain?",
+                options: [
+                    "Switch",
+                    "Router",
+                    "Hub",
+                    "Bridge"
+                ],
+                answer: 2
+            },
+            {
+                question: "What is the broadcast IP address?",
+                options: [
+                    "192.168.1.1",
+                    "10.0.0.1",
+                    "255.255.255.0",
+                    "255.255.255.255"
+                ],
+                answer: 3
+            },
+            {
+                question: "Which device connects networks using different protocols?",
+                options: [
+                    "Switch",
+                    "Router",
+                    "Gateway",
+                    "Repeater"
+                ],
+                answer: 2
+            }
+        ];
+        
+        // DOM elements
+        const quizBtn = document.getElementById('quizBtn');
+        const quizModal = document.getElementById('quizModal');
+        const closeQuiz = document.getElementById('closeQuiz');
+        const quizContainer = document.getElementById('quizContainer');
+        const submitBtn = document.getElementById('submitQuiz');
+        const quizResult = document.getElementById('quizResult');
+        
+        // Variables
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        
+        // Event listeners
+        quizBtn.addEventListener('click', openQuiz);
+        closeQuiz.addEventListener('click', closeQuizModal);
+        submitBtn.addEventListener('click', submitQuiz);
+        
+        // Functions
+        function openQuiz() {
+            quizModal.style.display = 'block';
+            renderQuiz();
+        }
+        
+        function closeQuizModal() {
+            quizModal.style.display = 'none';
+            resetQuiz();
+        }
+        
+        function renderQuiz() {
+            quizContainer.innerHTML = '';
+            
+            quizData.forEach((question, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question';
+                questionElement.innerHTML = `
+                    <h3>Question ${index + 1}: ${question.question}</h3>
+                    <div class="options" id="options-${index}"></div>
+                `;
+                
+                quizContainer.appendChild(questionElement);
+                
+                const optionsContainer = document.getElementById(`options-${index}`);
+                
+                question.options.forEach((option, optionIndex) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    if (userAnswers[index] === optionIndex) {
+                        optionElement.classList.add('selected');
+                    }
+                    optionElement.textContent = option;
+                    optionElement.dataset.optionIndex = optionIndex;
+                    optionElement.dataset.questionIndex = index;
+                    
+                    optionElement.addEventListener('click', () => selectAnswer(index, optionIndex));
+                    
+                    optionsContainer.appendChild(optionElement);
+                });
+            });
+        }
+        
+        function selectAnswer(questionIndex, optionIndex) {
+            userAnswers[questionIndex] = optionIndex;
+            renderQuiz();
+        }
+        
+        function submitQuiz() {
+            score = 0;
+            
+            quizData.forEach((question, index) => {
+                const optionsContainer = document.getElementById(`options-${index}`);
+                const optionElements = optionsContainer.getElementsByClassName('option');
+                
+                if (userAnswers[index] === question.answer) {
+                    score++;
+                    optionElements[userAnswers[index]].classList.add('correct');
+                } else if (userAnswers[index] !== null) {
+                    optionElements[userAnswers[index]].classList.add('incorrect');
+                    optionElements[question.answer].classList.add('correct');
+                } else {
+                    optionElements[question.answer].classList.add('correct');
+                }
+            });
+            
+            const percentage = (score / quizData.length) * 100;
+            quizResult.innerHTML = `
+                <p>You scored ${score} out of ${quizData.length} (${percentage.toFixed(1)}%)</p>
+                <p>${getResultMessage(percentage)}</p>
+            `;
+            
+            submitBtn.style.display = 'none';
+        }
+        
+        function getResultMessage(percentage) {
+            if (percentage >= 90) return 'Excellent! You really know your networking!';
+            if (percentage >= 70) return 'Great job! You have a good understanding of networking.';
+            if (percentage >= 50) return 'Not bad! Keep learning to improve your knowledge.';
+            return 'Keep studying! Networking can be challenging but rewarding.';
+        }
+        
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            quizResult.innerHTML = '';
+            submitBtn.style.display = 'block';
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === quizModal) {
+                closeQuizModal();
+            }
+        });
+    </script>
+</body>
+</html>

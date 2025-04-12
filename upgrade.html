@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History of Windows Upgrades</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0078d7;
+            --secondary: #106ebe;
+            --accent: #4fc3f7;
+            --dark: #1a1a1a;
+            --light: #f3f3f3;
+            --success: #4caf50;
+            --danger: #f44336;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        h1 i {
+            margin-right: 15px;
+        }
+
+        .search-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #searchInput {
+            padding: 10px 15px;
+            width: 60%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .windows-timeline {
+            margin: 40px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .year {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            min-width: 100px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .version-info {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .version-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .version-details {
+            color: #555;
+        }
+
+        .version-details p {
+            margin: 8px 0;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        #quizBtn {
+            display: block;
+            margin: 40px auto;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #quizBtn:hover {
+            background-color: var(--secondary);
+        }
+
+        #quizBtn i {
+            margin-right: 8px;
+        }
+
+        .quiz-container {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .quiz-container h2 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .quiz-question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .quiz-question p {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .quiz-options {
+            margin-left: 20px;
+        }
+
+        .quiz-options label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .quiz-options label:hover {
+            background-color: rgba(0, 120, 215, 0.1);
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .submit-btn {
+            padding: 10px 20px;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .submit-btn:hover {
+            background-color: #3d8b40;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ff9800;
+            border: 1px solid #ff9800;
+        }
+
+        .danger {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item {
+                flex-direction: column;
+            }
+            
+            .year {
+                min-width: 100%;
+                padding: 10px;
+            }
+            
+            #searchInput {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fab fa-windows"></i> History of Windows Upgrades (1985-2021)</h1>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for Windows version or year...">
+    </div>
+
+    <div class="windows-timeline" id="windowsTimeline">
+        <!-- Timeline items will be added here by JavaScript -->
+    </div>
+
+    <button id="quizBtn"><i class="fas fa-question-circle"></i> Take Windows History Quiz</button>
+
+    <div class="quiz-container" id="quizContainer">
+        <h2><i class="fas fa-graduation-cap"></i> Windows History Quiz</h2>
+        
+        <div class="quiz-question">
+            <p>1. Which was the first version of Windows released in 1985?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q1" value="a"> Windows 95</label>
+                <label><input type="radio" name="q1" value="b"> Windows 1.0</label>
+                <label><input type="radio" name="q1" value="c"> Windows NT</label>
+                <label><input type="radio" name="q1" value="d"> Windows 3.0</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>2. Which Windows version introduced the Start menu and taskbar?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q2" value="a"> Windows 98</label>
+                <label><input type="radio" name="q2" value="b"> Windows 2000</label>
+                <label><input type="radio" name="q2" value="c"> Windows 95</label>
+                <label><input type="radio" name="q2" value="d"> Windows XP</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>3. Which year was Windows XP released?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q3" value="a"> 1998</label>
+                <label><input type="radio" name="q3" value="b"> 2000</label>
+                <label><input type="radio" name="q3" value="c"> 2001</label>
+                <label><input type="radio" name="q3" value="d"> 2006</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>4. Which Windows version was considered a major failure due to performance issues?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q4" value="a"> Windows 7</label>
+                <label><input type="radio" name="q4" value="b"> Windows 10</label>
+                <label><input type="radio" name="q4" value="c"> Windows Vista</label>
+                <label><input type="radio" name="q4" value="d"> Windows 8</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>5. How many years passed between Windows 10 and Windows 11 releases?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q5" value="a"> 4 years</label>
+                <label><input type="radio" name="q5" value="b"> 5 years</label>
+                <label><input type="radio" name="q5" value="c"> 6 years</label>
+                <label><input type="radio" name="q5" value="d"> 7 years</label>
+            </div>
+        </div>
+        
+        <button class="submit-btn" id="submitQuiz">Submit Answers</button>
+        <div class="result" id="quizResult"></div>
+    </div>
+
+    <script>
+        // Windows versions data
+        const windowsVersions = [
+            {
+                name: "Windows 1.0",
+                year: 1985,
+                details: "The first version of Windows that introduced a graphical user interface (GUI) and mouse support to MS-DOS."
+            },
+            {
+                name: "Windows 2.0",
+                year: 1987,
+                details: "Introduced overlapping windows and more sophisticated keyboard shortcuts. Included the first versions of Word and Excel."
+            },
+            {
+                name: "Windows 3.0",
+                year: 1990,
+                details: "First commercially successful version with improved graphics and performance. Introduced Program Manager and File Manager."
+            },
+            {
+                name: "Windows NT",
+                year: 1993,
+                details: "A completely new 32-bit operating system designed for business and professional users with better security and stability."
+            },
+            {
+                name: "Windows 95",
+                year: 1995,
+                details: "Revolutionary release that introduced the Start menu, taskbar, and desktop. First to support 32-bit applications and plug-and-play hardware."
+            },
+            {
+                name: "Windows 98",
+                year: 1998,
+                details: "Improved version of Windows 95 with better USB support, Internet Explorer integration, and the Windows Driver Model."
+            },
+            {
+                name: "Windows 2000",
+                year: 2000,
+                details: "Business-oriented OS based on NT technology with improved security and reliability features."
+            },
+            {
+                name: "Windows Me",
+                year: 2000,
+                details: "Millennium Edition focused on home users with multimedia features but was criticized for stability issues."
+            },
+            {
+                name: "Windows XP",
+                year: 2001,
+                details: "One of Microsoft's most successful and longest-running OS versions with a redesigned interface and improved stability."
+            },
+            {
+                name: "Windows Vista",
+                year: 2006,
+                details: "Introduced Aero visual style and improved security but was criticized for performance issues and hardware requirements."
+            },
+            {
+                name: "Windows 7",
+                year: 2009,
+                details: "Fixed many Vista issues with improved performance, a refined taskbar, and better touch support."
+            },
+            {
+                name: "Windows 8",
+                year: 2012,
+                details: "Radical redesign with a touch-first interface and removal of the Start button, which proved controversial."
+            },
+            {
+                name: "Windows 10",
+                year: 2015,
+                details: "Return of the Start menu with a hybrid interface combining elements of Windows 7 and 8. Introduced Cortana and Microsoft Edge."
+            },
+            {
+                name: "Windows 11",
+                year: 2021,
+                details: "Complete visual redesign with centered Start menu, rounded corners, and improved multitasking features."
+            }
+        ];
+
+        // Display Windows versions
+        const timelineElement = document.getElementById('windowsTimeline');
+        
+        function displayWindowsVersions(versions) {
+            timelineElement.innerHTML = '';
+            versions.forEach(version => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                item.innerHTML = `
+                    <div class="year">${version.year}</div>
+                    <div class="version-info">
+                        <div class="version-name">${version.name}</div>
+                        <div class="version-details">
+                            <p>${version.details}</p>
+                        </div>
+                    </div>
+                `;
+                timelineElement.appendChild(item);
+            });
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const filteredVersions = windowsVersions.filter(version => 
+                version.name.toLowerCase().includes(searchTerm) || 
+                version.year.toString().includes(searchTerm) ||
+                version.details.toLowerCase().includes(searchTerm)
+            );
+            displayWindowsVersions(filteredVersions);
+        });
+
+        // Quiz functionality
+        document.getElementById('quizBtn').addEventListener('click', function() {
+            const quizContainer = document.getElementById('quizContainer');
+            if (quizContainer.style.display === 'block') {
+                quizContainer.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-question-circle"></i> Take Windows History Quiz';
+            } else {
+                quizContainer.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-times"></i> Close Quiz';
+                window.scrollTo({
+                    top: quizContainer.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        document.getElementById('submitQuiz').addEventListener('click', function() {
+            const answers = {
+                q1: 'b',
+                q2: 'c',
+                q3: 'c',
+                q4: 'c',
+                q5: 'c'
+            };
+            
+            let score = 0;
+            const totalQuestions = Object.keys(answers).length;
+            
+            for (let question in answers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedOption && selectedOption.value === answers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const resultElement = document.getElementById('quizResult');
+            resultElement.style.display = 'block';
+            
+            let message = '';
+            let resultClass = '';
+            
+            if (percentage === 100) {
+                message = `🎉 Perfect! You scored ${score}/${totalQuestions} (${percentage}%)! 🎉`;
+                resultClass = 'success';
+            } else if (percentage >= 70) {
+                message = `👍 Great job! You scored ${score}/${totalQuestions} (${percentage}%)!`;
+                resultClass = 'success';
+            } else if (percentage >= 50) {
+                message = `😊 Good try! You scored ${score}/${totalQuestions} (${percentage}%). Keep learning!`;
+                resultClass = 'warning';
+            } else {
+                message = `📚 You scored ${score}/${totalQuestions} (${percentage}%). Review the material and try again!`;
+                resultClass = 'danger';
+            }
+            
+            resultElement.textContent = message;
+            resultElement.className = `result ${resultClass}`;
+            
+            // Scroll to result
+            resultElement.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Initialize the page
+        displayWindowsVersions(windowsVersions);
+    </script>
+</body>
+</html>

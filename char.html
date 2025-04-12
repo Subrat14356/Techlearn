@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characteristics of Computers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --danger: #f72585;
+            --success: #4cc9f0;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: var(--dark);
+            background-color: var(--light);
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: var(--secondary);
+            text-align: center;
+            margin: 30px 0 40px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        h1 i {
+            margin-right: 15px;
+            color: var(--accent);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 30px 0 15px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        .characteristic {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-left: 5px solid var(--accent);
+        }
+        
+        .characteristic:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        
+        .characteristic p {
+            margin: 15px 0;
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+        
+        .highlight {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .example-list {
+            margin-left: 20px;
+        }
+        
+        .example-list li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .example-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .definition {
+            font-style: italic;
+            color: var(--gray);
+            margin-left: 10px;
+        }
+        
+        #quizBtn {
+            display: block;
+            margin: 50px auto;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #quizBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        #quizBtn:active {
+            transform: translateY(1px);
+        }
+        
+        #quizBtn i {
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        #quizBtn:hover i {
+            transform: rotate(15deg);
+        }
+        
+        .quiz-container {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin: 40px 0;
+            border-top: 5px solid var(--accent);
+        }
+        
+        .quiz-container h2 {
+            color: var(--secondary);
+            margin-top: 0;
+            justify-content: center;
+        }
+        
+        .quiz-question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #dee2e6;
+        }
+        
+        .quiz-question:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-question p {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .quiz-options {
+            margin-left: 10px;
+        }
+        
+        .quiz-options label {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background-color: rgba(248, 249, 250, 0.5);
+        }
+        
+        .quiz-options label:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .quiz-options input[type="radio"] {
+            margin-right: 15px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+        
+        .submit-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--success), #3a86ff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 201, 240, 0.4);
+        }
+        
+        .result {
+            margin-top: 30px;
+            font-weight: 700;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-size: 1.2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .correct {
+            background-color: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        
+        .incorrect {
+            background-color: rgba(220, 53, 69, 0.15);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin: 20px 0 30px;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .characteristic {
+                padding: 20px;
+            }
+            
+            #quizBtn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1><i class="fas fa-laptop"></i> Characteristics of Computers</h1>
+    
+    <div class="characteristic">
+        <h2><i class="fas fa-tachometer-alt"></i> 1. Speed</h2>
+        <p>A computer can perform millions to billions of calculations in just a few seconds. Modern computers can execute billions of instructions per second (measured in GHz).</p>
+        <p>This incredible speed enables computers to perform complex tasks like weather forecasting, scientific simulations, and real-time data processing that would take humans years to complete.</p>
+    </div>
+    
+    <div class="characteristic">
+        <h2><i class="fas fa-check-circle"></i> 2. Accuracy</h2>
+        <p>A computer always provides correct results when given proper input and instructions. If the input data is correct and the program is properly designed, the output will be 100% accurate.</p>
+        <p>Computers perform calculations with perfect precision, making them ideal for tasks requiring exact results like financial calculations, scientific research, and engineering designs.</p>
+    </div>
+    
+    <div class="characteristic">
+        <h2><i class="fas fa-redo"></i> 3. Diligence</h2>
+        <p>A computer does not get tired or bored. It can work continuously for long hours and perform repetitive tasks millions of times with the same accuracy and speed.</p>
+        <p>This characteristic makes computers perfect for:</p>
+        <ul class="example-list">
+            <li>Automated manufacturing processes</li>
+            <li>Server operations running 24/7</li>
+            <li>Monitoring systems that require constant attention</li>
+            <li>Repetitive calculations in scientific research</li>
+        </ul>
+    </div>
+    
+    <div class="characteristic">
+        <h2><i class="fas fa-database"></i> 4. High Storage Capacity</h2>
+        <p>Modern computers can store enormous amounts of data and programs for future use. This data can be retrieved at any time without any loss or degradation.</p>
+        <p>Storage capacities have grown exponentially:</p>
+        <ul class="example-list">
+            <li>Hard drives now measure in terabytes (TB)</li>
+            <li>Cloud storage provides virtually unlimited capacity</li>
+            <li>Flash memory offers compact, durable storage</li>
+            <li>Optical media provides long-term archival storage</li>
+        </ul>
+    </div>
+    
+    <div class="characteristic">
+        <h2><i class="fas fa-random"></i> 5. Versatility</h2>
+        <p>Computers can perform a wide variety of tasks across different domains. The same machine can be used for completely different purposes simply by changing the software.</p>
+        <p>Computers are used in nearly every field:</p>
+        <ul class="example-list">
+            <li><span class="highlight">Home:</span> Entertainment, communication, smart home control</li>
+            <li><span class="highlight">Hospitals:</span> Patient monitoring, medical imaging, records management</li>
+            <li><span class="highlight">Offices:</span> Document processing, accounting, communication</li>
+            <li><span class="highlight">Education:</span> E-learning, research, administration</li>
+            <li><span class="highlight">Industries:</span> Automation, design, inventory management</li>
+        </ul>
+    </div>
+    
+    <div class="characteristic">
+        <h2><i class="fas fa-globe"></i> 6. Faster Communication</h2>
+        <p>Computers enable instant communication across the globe through the internet and networking technologies. Information can be exchanged at nearly the speed of light.</p>
+        <p>Modern communication methods include:</p>
+        <ul class="example-list">
+            <li>Email and instant messaging</li>
+            <li>Video conferencing</li>
+            <li>Social media platforms</li>
+            <li>Cloud-based collaboration tools</li>
+            <li>Real-time data sharing</li>
+        </ul>
+    </div>
+    
+    <div class="characteristic">
+        <h2><i class="fas fa-brain"></i> 7. Zero IQ (Intelligence Quotient)</h2>
+        <p>A computer does not have its own intelligence or consciousness. It works strictly within the limits of the information and instructions provided by humans.</p>
+        <p><span class="definition">IQ: Intelligence Quotient - A measure of a person's cognitive abilities</span></p>
+        <p>While computers can simulate intelligent behavior through programming and artificial intelligence, they lack:</p>
+        <ul class="example-list">
+            <li>True understanding or consciousness</li>
+            <li>Creativity (without specific programming)</li>
+            <li>Emotional intelligence</li>
+            <li>Independent thought</li>
+        </ul>
+    </div>
+    
+    <div class="characteristic">
+        <h2><i class="fas fa-robot"></i> 8. Lack of Decision-Making Power</h2>
+        <p>A computer cannot make independent decisions or judgments. It only processes the information given to it and provides results based on its programming.</p>
+        <p>While AI systems can make choices within defined parameters, they:</p>
+        <ul class="example-list">
+            <li>Cannot make moral or ethical judgments</li>
+            <li>Only follow programmed logic</li>
+            <li>Have no will or desires of their own</li>
+            <li>Cannot act outside their programming</li>
+        </ul>
+    </div>
+    
+    <button id="quizBtn"><i class="fas fa-question-circle"></i> Take Computer Characteristics Quiz</button>
+    
+    <div class="quiz-container" id="quizContainer">
+        <h2><i class="fas fa-graduation-cap"></i> Computer Characteristics Quiz</h2>
+        
+        <div class="quiz-question">
+            <p>1. Which characteristic explains why computers can work continuously without getting tired?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q1" value="a"> Speed</label>
+                <label><input type="radio" name="q1" value="b"> Diligence</label>
+                <label><input type="radio" name="q1" value="c"> Versatility</label>
+                <label><input type="radio" name="q1" value="d"> Accuracy</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>2. What does "Zero IQ" mean in relation to computers?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q2" value="a"> Computers cannot perform calculations</label>
+                <label><input type="radio" name="q2" value="b"> Computers have their own intelligence</label>
+                <label><input type="radio" name="q2" value="c"> Computers lack independent thinking</label>
+                <label><input type="radio" name="q2" value="d"> Computers cannot store information</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>3. Which characteristic allows computers to be used in homes, hospitals, and industries?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q3" value="a"> High Storage Capacity</label>
+                <label><input type="radio" name="q3" value="b"> Faster Communication</label>
+                <label><input type="radio" name="q3" value="c"> Versatility</label>
+                <label><input type="radio" name="q3" value="d"> Lack of Decision-Making Power</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>4. What ensures that computers always provide correct results when given proper input?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q4" value="a"> Speed</label>
+                <label><input type="radio" name="q4" value="b"> Accuracy</label>
+                <label><input type="radio" name="q4" value="c"> Zero IQ</label>
+                <label><input type="radio" name="q4" value="d"> Diligence</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>5. Which of these is NOT a limitation of computers?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q5" value="a"> Lack of independent decision-making</label>
+                <label><input type="radio" name="q5" value="b"> Getting tired after long use</label>
+                <label><input type="radio" name="q5" value="c"> No true understanding or consciousness</label>
+                <label><input type="radio" name="q5" value="d"> Dependence on human programming</label>
+            </div>
+        </div>
+        
+        <button class="submit-btn" id="submitQuiz"><i class="fas fa-paper-plane"></i> Submit Answers</button>
+        <div class="result" id="quizResult"></div>
+    </div>
+
+    <script>
+        document.getElementById('quizBtn').addEventListener('click', function() {
+            const quizContainer = document.getElementById('quizContainer');
+            if (quizContainer.style.display === 'block') {
+                quizContainer.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-question-circle"></i> Take Computer Characteristics Quiz';
+            } else {
+                quizContainer.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-times"></i> Close Quiz';
+                window.scrollTo({
+                    top: quizContainer.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        document.getElementById('submitQuiz').addEventListener('click', function() {
+            const answers = {
+                q1: 'b',
+                q2: 'c',
+                q3: 'c',
+                q4: 'b',
+                q5: 'b'
+            };
+            
+            let score = 0;
+            const totalQuestions = Object.keys(answers).length;
+            
+            for (let question in answers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedOption && selectedOption.value === answers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const resultElement = document.getElementById('quizResult');
+            resultElement.style.display = 'block';
+            
+            let message = '';
+            if (percentage === 100) {
+                message = `🎉 Perfect! You scored ${score}/${totalQuestions} (${percentage}%)! 🎉`;
+            } else if (percentage >= 75) {
+                message = `👍 Great job! You scored ${score}/${totalQuestions} (${percentage}%)!`;
+            } else if (percentage >= 50) {
+                message = `😊 Good try! You scored ${score}/${totalQuestions} (${percentage}%). Keep learning!`;
+            } else {
+                message = `📚 You scored ${score}/${totalQuestions} (${percentage}%). Review the material and try again!`;
+            }
+            
+            resultElement.textContent = message;
+            resultElement.className = percentage >= 75 ? 'result correct' : 'result incorrect';
+            
+            // Scroll to result
+            resultElement.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

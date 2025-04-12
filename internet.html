@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolution of the Internet: DNS & IP Addressing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #333;
+            --success-color: #27ae60;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+        }
+        
+        h4 {
+            color: var(--primary-color);
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar {
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .timeline {
+            margin: 20px 0;
+            padding-left: 20px;
+            border-left: 3px solid var(--secondary-color);
+        }
+        
+        .timeline-item {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .timeline-year {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .feature-list li:before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+        }
+        
+        .tech-box {
+            background-color: var(--light-color);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .quiz-btn {
+            display: block;
+            background-color: var(--accent-color);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 30px auto;
+            width: 200px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+        
+        .quiz-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .icon {
+            margin-right: 8px;
+        }
+        
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .company-item {
+            background-color: var(--light-color);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        /* Quiz Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .quiz-question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .quiz-options {
+            margin-top: 10px;
+        }
+        
+        .quiz-option {
+            display: block;
+            margin: 8px 0;
+            padding: 8px 12px;
+            background-color: var(--light-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .quiz-option:hover {
+            background-color: #d6eaf8;
+        }
+        
+        .quiz-option.correct {
+            background-color: #d5f5e3;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #fadbd8;
+        }
+        
+        .quiz-results {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .quiz-nav-btn {
+            padding: 8px 16px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .quiz-nav-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: auto;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-network-wired icon"></i>Evolution of the Internet: DNS & IP Addressing</h1>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <section>
+                <h2><i class="fas fa-history icon"></i>Historical Development</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="timeline-year">1984</span> - The Domain Name System (DNS) was developed.
+                        <ul>
+                            <li>Computers on a network were assigned IP addresses for identification.</li>
+                            <li>An IP address consists of 32 bits (or 4 bytes), divided into 4 octets (each between 0-255).</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h3>Why was DNS introduced?</h3>
+                        <ul>
+                            <li>Remembering numeric IP addresses was difficult.</li>
+                            <li>DNS assigns human-readable names to IP addresses.</li>
+                            <li>It converts IP addresses to domain names and vice versa.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h3>IP Address Structure</h3>
+                        <p>IP Address is divided into:</p>
+                        <ul>
+                            <li>Network ID (Net ID)</li>
+                            <li>Host ID</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h3>Internet Management Authorities:</h3>
+                        <ul>
+                            <li><strong>IANA</strong> (Internet Assigned Numbers Authority) - Assigns network IDs.</li>
+                            <li><strong>ISP</strong> (Internet Service Provider) - Provides internet services.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="timeline-year">1990</span> - The ARPANET network was decommissioned, but its functionality continued through other networks.
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="timeline-year">1992</span> - The introduction of Gopher protocol and the World Wide Web (WWW).
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h3>Important Internet Developments:</h3>
+                        <ul>
+                            <li>The first WWW server and WWW client were created by Tim Berners-Lee.</li>
+                            <li>Standardization of URL (Uniform Resource Locator), HTML (HyperText Markup Language), and HTTP (HyperText Transfer Protocol).</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <span class="timeline-year">1993</span> - The first graphical internet browser, Mosaic, was released.
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h2><i class="fas fa-server icon"></i>Backbone Network</h2>
+                <p>A Backbone Network is a high-speed transmission line that connects smaller networks.</p>
+                <ul>
+                    <li>It transmits data in bulk at high speeds.</li>
+                    <li>It consists of different types of networks connected together.</li>
+                    <li>ISPs (Internet Service Providers) are clients interconnected within the backbone network.</li>
+                </ul>
+                
+                <h3>Backbone Network in Different Areas:</h3>
+                <div class="tech-box">
+                    <h4><i class="fas fa-wifi icon"></i>Local Backbone</h4>
+                    <p>A set of connections within a Local Area Network (LAN) linking to a Wide Area Network (WAN).</p>
+                    <p><strong>Example:</strong> Cybercafés, schools, and internet browsing centers.</p>
+                </div>
+                
+                <div class="tech-box">
+                    <h4><i class="fas fa-globe icon"></i>Wide Area Backbone</h4>
+                    <p>A set of paths connecting local or regional networks over long distances.</p>
+                    <p><strong>Example:</strong> Connection between different ISPs (Internet Service Providers).</p>
+                </div>
+            </section>
+            
+            <section>
+                <h2><i class="fas fa-project-diagram icon"></i>Network Nodes & Backbone Connectivity</h2>
+                <h3>What are Network Nodes?</h3>
+                <p>A network node is a connection point in a network used for data switching.</p>
+                <ul>
+                    <li>Local ISPs provide internet services to homes and businesses.</li>
+                    <li>Larger companies connect directly to the backbone network for faster and more stable connectivity.</li>
+                </ul>
+                
+                <h3>Backbone Networks & Their Providers</h3>
+                <p>Backbone networks are used in commercial, educational, and government sectors.</p>
+                <p>Some major companies providing backbone connectivity:</p>
+                
+                <div class="company-grid">
+                    <div class="company-item">British Telecom (BT)</div>
+                    <div class="company-item">AT&T</div>
+                    <div class="company-item">Reliance</div>
+                    <div class="company-item">BSNL</div>
+                    <div class="company-item">America Online (AOL)</div>
+                </div>
+            </section>
+            
+            <section>
+                <h2><i class="fas fa-network-wired icon"></i>Network Technologies for Backbone</h2>
+                
+                <div class="tech-box">
+                    <h3><i class="fas fa-ring icon"></i>1. Token Ring</h3>
+                    <ul>
+                        <li>Token Ring is a Local Area Network (LAN) technology.</li>
+                        <li>Computers are connected in a ring or star topology.</li>
+                        <li>It uses a token-passing scheme to manage network access.</li>
+                        <li>Collisions occur when two computers transmit data simultaneously.</li>
+                        <li>It is the second most widely used LAN technology after Ethernet.</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-box">
+                    <h3><i class="fas fa-ethernet icon"></i>2. Ethernet</h3>
+                    <ul>
+                        <li>Ethernet is the most widely used LAN technology.</li>
+                        <li>Follows the IEEE 802.3 standard, originally developed by Xerox.</li>
+                        <li>Uses coaxial cables or twisted-pair cables.</li>
+                        <li>Supports wireless LANs as well.</li>
+                        <li>The 10BASE-T Ethernet standard provides speeds up to 10 Mbps.</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-box">
+                    <h3><i class="fas fa-traffic-light icon"></i>CSMA/CD (Carrier Sense Multiple Access with Collision Detection)</h3>
+                    <ul>
+                        <li>CSMA/CD is a network protocol used in Ethernet for managing data collisions.</li>
+                        <li>When two computers send data simultaneously, a collision occurs.</li>
+                        <li>CSMA/CD detects collisions and ensures retransmission after a random delay.</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-box">
+                    <h3><i class="fas fa-fiber icon"></i>FDDI (Fiber Distributed Data Interface)</h3>
+                    <ul>
+                        <li>FDDI is a standard for high-speed data transmission in LANs and MANs.</li>
+                        <li>Extends the network range up to 200 km.</li>
+                        <li>Derived from the IEEE 802.4 Token Bus protocol.</li>
+                        <li>Supports thousands of computers in a Metropolitan Area Network (MAN).</li>
+                    </ul>
+                    
+                    <h4>FDDI Network Structure:</h4>
+                    <ul>
+                        <li><strong>Primary Ring</strong> - Provides a 100 Mbps data speed.</li>
+                        <li><strong>Secondary Ring</strong> - Used as a backup in case of primary ring failure.</li>
+                        <li>If the secondary ring is not used for backup, the FDDI network speed reaches 200 Mbps.</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section>
+                <h2><i class="fas fa-list-check icon"></i>Internet Features</h2>
+                <ul class="feature-list">
+                    <li>Geographic distribution</li>
+                    <li>Robust architecture</li>
+                    <li>High-speed data transmission (near-light speed)</li>
+                    <li>Universal access</li>
+                    <li>Rapid growth rate (size, power, functionality)</li>
+                    <li>Digital advantages</li>
+                    <li>Free of speed limitations</li>
+                </ul>
+                
+                <h3>Web Features:</h3>
+                <ul class="feature-list">
+                    <li>Digital data transmission</li>
+                    <li>Usenet newsgroups</li>
+                    <li>Distributed network architecture</li>
+                </ul>
+                
+                <h3>DNS Clarification:</h3>
+                <div class="tech-box">
+                    <p><strong>DNS</strong>: Domain Name System (Not "Do Not Disturb")</p>
+                    <p>The DNS is the phonebook of the Internet, translating domain names to IP addresses.</p>
+                </div>
+            </section>
+            
+            <button id="quizButton" class="quiz-btn">
+                <i class="fas fa-question-circle icon"></i>Take the Quiz
+            </button>
+        </div>
+        
+        <div class="sidebar">
+            <section>
+                <h2><i class="fas fa-bolt icon"></i>Optical Fiber Backbone Network</h2>
+                <ul>
+                    <li>Modern backbone networks use fiber-optic cables for high-speed data transmission.</li>
+                    <li>These fiber-optic links are known as Optical Carriers (OC).</li>
+                    <li>They use electromagnetic light waves to transmit data efficiently while reducing interference.</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2><i class="fas fa-sync-alt icon"></i>SONET</h2>
+                <p><strong>Synchronous Optical Network Technology</strong></p>
+                <ul>
+                    <li>SONET is a high-speed fiber-optic networking technology.</li>
+                    <li>It ensures stable digital signal transmission and enhances data reliability.</li>
+                    <li>Provides standardized protocol for communication between different vendors' equipment.</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2><i class="fas fa-tachometer-alt icon"></i>Network Speeds</h2>
+                <div class="tech-box">
+                    <h4>Standard Ethernet Speeds:</h4>
+                    <ul>
+                        <li>10 Mbps (Original Ethernet)</li>
+                        <li>100 Mbps (Fast Ethernet)</li>
+                        <li>1000 Mbps (Gigabit Ethernet)</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-box">
+                    <h4>FDDI Speeds:</h4>
+                    <ul>
+                        <li>Primary Ring: 100 Mbps</li>
+                        <li>Combined Capacity: 200 Mbps</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section>
+                <h2><i class="fas fa-lightbulb icon"></i>Key Facts</h2>
+                <div class="tech-box">
+                    <p><strong>First Web Browser:</strong> Mosaic (1993)</p>
+                    <p><strong>IP Address Size:</strong> 32 bits (IPv4)</p>
+                    <p><strong>DNS Purpose:</strong> Human-readable naming system</p>
+                    <p><strong>Backbone Speed:</strong> Multiple gigabits per second</p>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="quizTitle"><i class="fas fa-question-circle"></i> Internet Evolution Quiz</h2>
+            <div id="quizContainer">
+                <!-- Quiz questions will be inserted here by JavaScript -->
+            </div>
+            <div class="quiz-navigation">
+                <button id="prevBtn" class="quiz-nav-btn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                <button id="nextBtn" class="quiz-nav-btn">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+            <div id="quizResults" class="quiz-results"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Quiz Questions
+        const quizQuestions = [
+            {
+                question: "When was the Domain Name System (DNS) developed?",
+                options: ["1980", "1984", "1990", "1995"],
+                answer: 1,
+                explanation: "The Domain Name System (DNS) was developed in 1984 to make the Internet more user-friendly by translating domain names to IP addresses."
+            },
+            {
+                question: "What is the primary purpose of DNS?",
+                options: [
+                    "To encrypt internet communications",
+                    "To assign IP addresses automatically",
+                    "To provide human-readable names for IP addresses",
+                    "To create network backbones"
+                ],
+                answer: 2,
+                explanation: "DNS was introduced because remembering numeric IP addresses was difficult. It assigns human-readable names to IP addresses and converts between them."
+            },
+            {
+                question: "What are the two main parts of an IP address?",
+                options: [
+                    "Domain and Subdomain",
+                    "Network ID and Host ID",
+                    "Prefix and Suffix",
+                    "TCP and IP portions"
+                ],
+                answer: 1,
+                explanation: "An IP address is divided into Network ID (identifies the network) and Host ID (identifies the specific device on that network)."
+            },
+            {
+                question: "Which organization assigns network IDs?",
+                options: [
+                    "ISP (Internet Service Provider)",
+                    "IANA (Internet Assigned Numbers Authority)",
+                    "IEEE (Institute of Electrical and Electronics Engineers)",
+                    "W3C (World Wide Web Consortium)"
+                ],
+                answer: 1,
+                explanation: "IANA (Internet Assigned Numbers Authority) is responsible for assigning network IDs, while ISPs provide internet services to end users."
+            },
+            {
+                question: "What was significant about the year 1993 in Internet history?",
+                options: [
+                    "The first email was sent",
+                    "The ARPANET was decommissioned",
+                    "The first graphical web browser (Mosaic) was released",
+                    "DNS was introduced"
+                ],
+                answer: 2,
+                explanation: "The first graphical internet browser, Mosaic, was released in 1993, making the web more accessible to the general public."
+            },
+            {
+                question: "What is a backbone network?",
+                options: [
+                    "A network for spine-related medical research",
+                    "A high-speed transmission line connecting smaller networks",
+                    "The main cable running through a computer case",
+                    "A type of wireless network"
+                ],
+                answer: 1,
+                explanation: "A backbone network is a high-speed transmission line that connects smaller networks, transmitting data in bulk at high speeds."
+            },
+            {
+                question: "Which technology uses a token-passing scheme to manage network access?",
+                options: [
+                    "Ethernet",
+                    "Token Ring",
+                    "FDDI",
+                    "SONET"
+                ],
+                answer: 1,
+                explanation: "Token Ring is a LAN technology that uses a token-passing scheme to manage network access, preventing collisions by allowing only one computer to transmit at a time."
+            },
+            {
+                question: "What protocol does Ethernet use to manage data collisions?",
+                options: [
+                    "TCP/IP",
+                    "HTTP",
+                    "CSMA/CD",
+                    "FTP"
+                ],
+                answer: 2,
+                explanation: "CSMA/CD (Carrier Sense Multiple Access with Collision Detection) is the network protocol used in Ethernet to detect and manage data collisions."
+            },
+            {
+                question: "What is the primary advantage of fiber-optic backbone networks?",
+                options: [
+                    "Lower cost than copper cables",
+                    "Easier to install",
+                    "Higher speed and reduced interference",
+                    "Works without electricity"
+                ],
+                answer: 2,
+                explanation: "Fiber-optic cables provide high-speed data transmission with reduced interference, making them ideal for backbone networks."
+            },
+            {
+                question: "What are the two rings in an FDDI network?",
+                options: [
+                    "Primary and Secondary",
+                    "Inner and Outer",
+                    "Data and Control",
+                    "Main and Backup"
+                ],
+                answer: 0,
+                explanation: "FDDI networks contain two token rings: Primary (100 Mbps) for data transmission and Secondary (backup) that can be used to reach 200 Mbps total capacity."
+            }
+        ];
+        
+        // Quiz Variables
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(quizQuestions.length).fill(null);
+        
+        // DOM Elements
+        const quizButton = document.getElementById('quizButton');
+        const quizModal = document.getElementById('quizModal');
+        const closeBtn = document.querySelector('.close');
+        const quizContainer = document.getElementById('quizContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const quizResults = document.getElementById('quizResults');
+        
+        // Event Listeners
+        quizButton.addEventListener('click', startQuiz);
+        closeBtn.addEventListener('click', closeQuiz);
+        prevBtn.addEventListener('click', showPreviousQuestion);
+        nextBtn.addEventListener('click', showNextQuestion);
+        
+        // Functions
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers.fill(null);
+            quizResults.innerHTML = '';
+            showQuestion();
+            quizModal.style.display = 'block';
+        }
+        
+        function closeQuiz() {
+            quizModal.style.display = 'none';
+        }
+        
+        function showQuestion() {
+            // Update navigation buttons
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === quizQuestions.length - 1 ? 'Submit' : 'Next';
+            
+            // Display current question
+            const question = quizQuestions[currentQuestion];
+            let html = `
+                <div class="quiz-question">
+                    <h3>Question ${currentQuestion + 1}/${quizQuestions.length}</h3>
+                    <p>${question.question}</p>
+                    <div class="quiz-options">
+            `;
+            
+            // Add options
+            question.options.forEach((option, index) => {
+                const isChecked = userAnswers[currentQuestion] === index ? 'checked' : '';
+                const isCorrect = userAnswers[currentQuestion] !== null && index === question.answer ? 'correct' : '';
+                const isIncorrect = userAnswers[currentQuestion] !== null && userAnswers[currentQuestion] === index && userAnswers[currentQuestion] !== question.answer ? 'incorrect' : '';
+                
+                html += `
+                    <label class="quiz-option ${isCorrect} ${isIncorrect}">
+                        <input type="radio" name="answer" value="${index}" ${isChecked} 
+                            ${userAnswers[currentQuestion] !== null ? 'disabled' : ''}>
+                        ${option}
+                    </label>
+                `;
+            });
+            
+            // Add explanation if answered
+            if (userAnswers[currentQuestion] !== null) {
+                html += `
+                    <div class="explanation" style="margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px;">
+                        <strong>Explanation:</strong> ${question.explanation}
+                    </div>
+                `;
+            }
+            
+            html += `</div></div>`;
+            quizContainer.innerHTML = html;
+            
+            // Add event listeners to radio buttons
+            if (userAnswers[currentQuestion] === null) {
+                const radioButtons = document.querySelectorAll('input[name="answer"]');
+                radioButtons.forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        userAnswers[currentQuestion] = parseInt(e.target.value);
+                        if (userAnswers[currentQuestion] === question.answer) {
+                            score++;
+                        }
+                        showQuestion(); // Refresh to show explanation
+                    });
+                });
+            }
+        }
+        
+        function showPreviousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+        
+        function showNextQuestion() {
+            if (currentQuestion < quizQuestions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                // Submit quiz
+                const unanswered = userAnswers.filter(answer => answer === null).length;
+                if (unanswered > 0) {
+                    if (!confirm(`You have ${unanswered} unanswered questions. Submit anyway?`)) {
+                        return;
+                    }
+                }
+                
+                showResults();
+            }
+        }
+        
+        function showResults() {
+            const percentage = Math.round((score / quizQuestions.length) * 100);
+            let message = '';
+            
+            if (percentage >= 80) {
+                message = `Excellent! You scored ${score}/${quizQuestions.length} (${percentage}%) <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>`;
+            } else if (percentage >= 60) {
+                message = `Good job! You scored ${score}/${quizQuestions.length} (${percentage}%) <i class="fas fa-star"></i><i class="fas fa-star"></i>`;
+            } else if (percentage >= 40) {
+                message = `Not bad! You scored ${score}/${quizQuestions.length} (${percentage}%) <i class="fas fa-star"></i>`;
+            } else {
+                message = `Keep trying! You scored ${score}/${quizQuestions.length} (${percentage}%) <i class="fas fa-book"></i>`;
+            }
+            
+            quizResults.innerHTML = message;
+            nextBtn.style.display = 'none';
+            prevBtn.style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === quizModal) {
+                closeQuiz();
+            }
+        });
+    </script>
+</body>
+</html>

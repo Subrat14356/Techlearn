@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Units and Storage Devices</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #3a56d4;
+            --accent: #6c8eff;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        h1 i {
+            margin-right: 15px;
+        }
+
+        h2 {
+            margin-top: 40px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        h3 {
+            margin-top: 25px;
+            color: var(--secondary);
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .inventor {
+            font-style: italic;
+            color: var(--info);
+        }
+
+        .memory-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .memory-card {
+            flex: 1 1 300px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--accent);
+        }
+
+        .memory-card h4 {
+            margin-top: 0;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .memory-card h4 i {
+            color: var(--accent);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .floppy-disk-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .floppy-disk-table th, .floppy-disk-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .floppy-disk-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .floppy-disk-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .feature-list {
+            margin-left: 20px;
+        }
+
+        .feature-list li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .feature-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        #quizBtn {
+            display: block;
+            margin: 40px auto;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #quizBtn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        #quizBtn i {
+            margin-right: 10px;
+        }
+
+        .quiz-container {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .quiz-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .quiz-question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .quiz-question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .quiz-question p {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .quiz-options {
+            margin-left: 20px;
+        }
+
+        .quiz-options label {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .quiz-options label:hover {
+            background-color: rgba(74, 107, 255, 0.1);
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: var(--primary);
+        }
+
+        .submit-btn {
+            display: block;
+            margin: 25px auto 0;
+            padding: 12px 25px;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .perfect {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .good {
+            background-color: rgba(23, 162, 184, 0.2);
+            color: var(--info);
+            border: 1px solid var(--info);
+        }
+
+        .average {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .poor {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            .memory-types {
+                flex-direction: column;
+            }
+            
+            .memory-card {
+                flex: 1 1 auto;
+            }
+            
+            .comparison-table, .floppy-disk-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-memory"></i> Memory Units and Storage Devices</h1>
+
+    <div class="section">
+        <h2><i class="fas fa-binary"></i> Bit (Binary Digit)</h2>
+        <p>A <span class="highlight">bit</span> (0 or 1) is the smallest unit of data in a computer. All data in computers is represented using bits.</p>
+        <p><span class="inventor">Developed By: Lady Ada Lovelace</span> - Often regarded as the first computer programmer for her work on Charles Babbage's Analytical Engine.</p>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-brain"></i> Types of Memory</h2>
+        
+        <div class="memory-types">
+            <div class="memory-card">
+                <h4><i class="fas fa-microchip"></i> Main Memory (Primary Memory)</h4>
+                <ul class="feature-list">
+                    <li>ROM (Read-Only Memory)</li>
+                    <li>RAM (Random Access Memory)</li>
+                    <li>PROM (Programmable Read-Only Memory)</li>
+                    <li>SRAM (Static RAM)</li>
+                    <li>DRAM (Dynamic RAM)</li>
+                    <li>EROM (Erasable Read-Only Memory)</li>
+                    <li>EAROM (Electrically Alterable Read-Only Memory)</li>
+                </ul>
+            </div>
+            
+            <div class="memory-card">
+                <h4><i class="fas fa-hdd"></i> Mass Memory (Secondary Memory)</h4>
+                <ul class="feature-list">
+                    <li>Magnetic Tape</li>
+                    <li>Magnetic Disk</li>
+                    <li>Optical Disk</li>
+                    <li>Solid State Drives (SSD)</li>
+                    <li>Flash Memory</li>
+                    <li>Cloud Storage</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-balance-scale"></i> Difference Between Main Memory and Mass Memory</h2>
+        
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Main Memory</th>
+                    <th>Mass Memory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Located inside the computer</td>
+                    <td>Located outside the computer</td>
+                </tr>
+                <tr>
+                    <td>Faster access speed</td>
+                    <td>Slower access speed</td>
+                </tr>
+                <tr>
+                    <td>Stores temporary data</td>
+                    <td>Stores permanent data</td>
+                </tr>
+                <tr>
+                    <td>Volatile (RAM loses data when power is off)</td>
+                    <td>Non-volatile (retains data even when power is off)</td>
+                </tr>
+                <tr>
+                    <td>More expensive per GB</td>
+                    <td>Less expensive per GB</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-microchip"></i> Types of Main Memory</h2>
+        
+        <h3>ROM (Read-Only Memory)</h3>
+        <p>As the name suggests, it is read-only and cannot be modified after manufacturing. The user can only read the stored information but cannot write or modify it.</p>
+        
+        <h4>Types of ROM:</h4>
+        <ul class="feature-list">
+            <li><span class="highlight">PROM</span> (Programmable Read-Only Memory): Can be programmed once after manufacturing.</li>
+            <li><span class="highlight">EPROM</span> (Erasable Programmable Read-Only Memory): Can be erased and reprogrammed using UV light.</li>
+            <li><span class="highlight">EAROM</span> (Electrically Alterable Read-Only Memory): Can be modified electrically but at a slower rate.</li>
+        </ul>
+        
+        <h3>RAM (Random Access Memory)</h3>
+        <p>Used for temporary storage while the computer is running. Data is lost when power is turned off (volatile memory). RAM allows both reading and writing of data.</p>
+        
+        <h4>Types of RAM:</h4>
+        <ul class="feature-list">
+            <li><span class="highlight">SRAM</span> (Static RAM): Faster and does not need refreshing, used in cache memory.</li>
+            <li><span class="highlight">DRAM</span> (Dynamic RAM): Slower and requires constant refreshing, used in main memory.</li>
+            <li><span class="highlight">SDRAM</span> (Synchronous DRAM): Synchronized with the system clock for better performance.</li>
+            <li><span class="highlight">DDR SDRAM</span> (Double Data Rate SDRAM): Transfers data on both rising and falling edges of the clock signal.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-save"></i> Storage Devices</h2>
+        
+        <h3>Magnetic Tape</h3>
+        <p>A secondary storage device used for storing large amounts of data. Made of magnetic oxide with a thin plastic coating.</p>
+        
+        <h4>Function of Magnetic Tape:</h4>
+        <ul class="feature-list">
+            <li>Functions similarly to an audio cassette</li>
+            <li>Consists of two spools with a magnetic reel wound between them</li>
+            <li>Uses read/write heads to access information</li>
+            <li>Primarily used for backups and archival storage</li>
+        </ul>
+        
+        <h3>Magnetic Disk</h3>
+        <p>A secondary storage device used for data storage. Divided into tracks and sectors for organizing data.</p>
+        
+        <h4>Storage Organization:</h4>
+        <ul class="feature-list">
+            <li><span class="highlight">Track:</span> Circular path on the disk surface</li>
+            <li><span class="highlight">Sector:</span> Smallest storage unit (typically 512 bytes)</li>
+            <li><span class="highlight">Cluster:</span> Group of sectors treated as a single unit</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-save"></i> Floppy Disk</h2>
+        <p>A secondary storage device used for storing small amounts of data. Made of a magnetic oxide layer coated on thin plastic film, enclosed in a protective cover.</p>
+        
+        <h3>Floppy Disk Storage Conditions:</h3>
+        <ul class="feature-list">
+            <li>Must be stored at temperatures between 10°C to 60°C</li>
+            <li>Should be kept away from direct sunlight</li>
+            <li>Must be protected from magnets to avoid data loss</li>
+            <li>Handle carefully to prevent physical damage</li>
+        </ul>
+        
+        <h3>Floppy Disk Specifications:</h3>
+        <table class="floppy-disk-table">
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>Number of Tracks</th>
+                    <th>Number of Sectors</th>
+                    <th>Storage Capacity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>3.5 inch</td>
+                    <td>80</td>
+                    <td>18</td>
+                    <td>1.44 MB</td>
+                </tr>
+                <tr>
+                    <td>5.25 inch</td>
+                    <td>80</td>
+                    <td>15</td>
+                    <td>1.2 MB</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-hdd"></i> Hard Disk</h2>
+        <p>A secondary storage device used to store large amounts of data. Consists of multiple disks combined to form a disk pack.</p>
+        
+        <h3>Components of a Hard Disk:</h3>
+        <ul class="feature-list">
+            <li>Platters (disks coated with magnetic material)</li>
+            <li>Spindle (rotates the platters)</li>
+            <li>Read/write heads (one per platter surface)</li>
+            <li>Actuator arm (moves the heads)</li>
+            <li>Controller board (manages operations)</li>
+        </ul>
+        
+        <h3>Types of Hard Disks:</h3>
+        <div class="memory-types">
+            <div class="memory-card">
+                <h4><i class="fas fa-desktop"></i> Internal Hard Disk</h4>
+                <ul class="feature-list">
+                    <li>Installed inside the system unit</li>
+                    <li>Used for storing operating systems and applications</li>
+                    <li>Higher performance than external drives</li>
+                    <li>Available in various capacities (500GB to 10TB+)</li>
+                </ul>
+            </div>
+            
+            <div class="memory-card">
+                <h4><i class="fas fa-external-link-alt"></i> External Hard Disk</h4>
+                <ul class="feature-list">
+                    <li>Portable and connects via USB or other interfaces</li>
+                    <li>Used for additional storage and backups</li>
+                    <li>Available in HDD and SSD formats</li>
+                    <li>Typically slower than internal drives</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-compact-disc"></i> Optical Disk</h2>
+        <p>A storage medium that uses laser technology to read and write data. Commonly used for multimedia applications and software distribution.</p>
+        
+        <h3>Functionality:</h3>
+        <ul class="feature-list">
+            <li>Uses laser beam to read/write data on reflective surface</li>
+            <li>Data stored as pits (indentations) and lands (flat areas)</li>
+            <li>Different wavelengths for different formats (CD, DVD, Blu-ray)</li>
+        </ul>
+        
+        <h3>Types of Optical Disks:</h3>
+        <div class="memory-types">
+            <div class="memory-card">
+                <h4><i class="fab fa-codepen"></i> CD (Compact Disc)</h4>
+                <ul class="feature-list">
+                    <li>Capacity: 700MB</li>
+                    <li>Wavelength: 780nm (infrared)</li>
+                    <li>Used for audio, data, and small applications</li>
+                </ul>
+            </div>
+            
+            <div class="memory-card">
+                <h4><i class="fas fa-compact-disc"></i> DVD (Digital Versatile Disc)</h4>
+                <ul class="feature-list">
+                    <li>Capacity: 4.7GB (single-layer) or 8.5GB (dual-layer)</li>
+                    <li>Wavelength: 650nm (red)</li>
+                    <li>Used for video, software, and larger data storage</li>
+                </ul>
+            </div>
+            
+            <div class="memory-card">
+                <h4><i class="fas fa-compact-disc"></i> Blu-ray Disc</h4>
+                <ul class="feature-list">
+                    <li>Capacity: 25GB (single-layer) or 50GB (dual-layer)</li>
+                    <li>Wavelength: 405nm (blue-violet)</li>
+                    <li>Used for HD video and large data storage</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-bolt"></i> Solid State Drives (SSD)</h2>
+        <p>SSDs use flash memory to store data, offering faster performance and higher durability than traditional hard disks.</p>
+        
+        <h3>Key Features:</h3>
+        <ul class="feature-list">
+            <li>No moving parts (more resistant to physical shock)</li>
+            <li>Faster read/write speeds (especially for random access)</li>
+            <li>Lower power consumption</li>
+            <li>More expensive per GB than HDDs</li>
+            <li>Limited write cycles (though modern SSDs last many years)</li>
+        </ul>
+        
+        <h3>Applications:</h3>
+        <ul class="feature-list">
+            <li>Operating system drives for faster boot times</li>
+            <li>High-performance computing applications</li>
+            <li>Laptops and mobile devices for better battery life</li>
+            <li>Gaming systems for faster level loading</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-usb"></i> Flash Memory and USB Drives</h2>
+        
+        <h3>Flash Memory Cards</h3>
+        <p>Solid-state storage devices commonly used in portable devices like cameras and smartphones.</p>
+        
+        <h4>Types:</h4>
+        <ul class="feature-list">
+            <li>SD (Secure Digital) cards</li>
+            <li>microSD cards</li>
+            <li>CompactFlash</li>
+            <li>Memory Stick</li>
+        </ul>
+        
+        <h3>USB Drives</h3>
+        <p>Portable storage devices that connect via USB ports, also known as flash drives or thumb drives.</p>
+        
+        <h4>Key Features:</h4>
+        <ul class="feature-list">
+            <li>Compact and lightweight</li>
+            <li>Storage capacities from 16GB to 2TB</li>
+            <li>Plug-and-play functionality</li>
+            <li>No power source needed</li>
+            <li>Used for data transfer, backups, and system recovery</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-cloud"></i> Cloud Storage</h2>
+        <p>Cloud storage allows users to store data on remote servers accessed via the internet, rather than on local storage devices.</p>
+        
+        <h3>Types of Cloud Services:</h3>
+        <div class="memory-types">
+            <div class="memory-card">
+                <h4><i class="fas fa-server"></i> IaaS (Infrastructure as a Service)</h4>
+                <p>Provides virtualized computing resources over the internet (e.g., AWS, Azure, Google Cloud)</p>
+            </div>
+            
+            <div class="memory-card">
+                <h4><i class="fas fa-layer-group"></i> PaaS (Platform as a Service)</h4>
+                <p>Provides platforms allowing customers to develop, run, and manage applications (e.g., Heroku, Google App Engine)</p>
+            </div>
+            
+            <div class="memory-card">
+                <h4><i class="fas fa-laptop-code"></i> SaaS (Software as a Service)</h4>
+                <p>Delivers software applications over the internet (e.g., Google Workspace, Microsoft 365)</p>
+            </div>
+        </div>
+        
+        <h3>Advantages of Cloud Storage:</h3>
+        <ul class="feature-list">
+            <li>Accessibility from anywhere with internet</li>
+            <li>Automatic backups and versioning</li>
+            <li>Scalability (pay for what you use)</li>
+            <li>Collaboration features</li>
+            <li>Disaster recovery</li>
+        </ul>
+    </div>
+
+    <button id="quizBtn"><i class="fas fa-question-circle"></i> Take Memory & Storage Quiz</button>
+
+    <div class="quiz-container" id="quizContainer">
+        <h2><i class="fas fa-graduation-cap"></i> Memory & Storage Quiz</h2>
+        
+        <div class="quiz-question">
+            <p>1. What is the smallest unit of data in a computer?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q1" value="a"> Byte</label>
+                <label><input type="radio" name="q1" value="b"> Bit</label>
+                <label><input type="radio" name="q1" value="c"> Nibble</label>
+                <label><input type="radio" name="q1" value="d"> Word</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>2. Which type of memory loses its data when power is turned off?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q2" value="a"> ROM</label>
+                <label><input type="radio" name="q2" value="b"> RAM</label>
+                <label><input type="radio" name="q2" value="c"> PROM</label>
+                <label><input type="radio" name="q2" value="d"> EPROM</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>3. What is the typical storage capacity of a standard 3.5" floppy disk?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q3" value="a"> 720KB</label>
+                <label><input type="radio" name="q3" value="b"> 1.2MB</label>
+                <label><input type="radio" name="q3" value="c"> 1.44MB</label>
+                <label><input type="radio" name="q3" value="d"> 2.88MB</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>4. Which storage device uses lasers to read and write data?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q4" value="a"> Hard Disk</label>
+                <label><input type="radio" name="q4" value="b"> SSD</label>
+                <label><input type="radio" name="q4" value="c"> Optical Disk</label>
+                <label><input type="radio" name="q4" value="d"> Magnetic Tape</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>5. What is the main advantage of SSDs over traditional hard disks?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q5" value="a"> Lower cost per GB</label>
+                <label><input type="radio" name="q5" value="b"> Higher storage capacity</label>
+                <label><input type="radio" name="q5" value="c"> Faster access speeds</label>
+                <label><input type="radio" name="q5" value="d"> Better compatibility with old systems</label>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <p>6. Which cloud service provides virtualized computing resources?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q6" value="a"> IaaS</label>
+                <label><input type="radio" name="q6" value="b"> PaaS</label>
+                <label><input type="radio" name="q6" value="c"> SaaS</label>
+                <label><input type="radio" name="q6" value="d"> DaaS</label>
+            </div>
+        </div>
+        
+        <button class="submit-btn" id="submitQuiz">Submit Answers</button>
+        <div class="result" id="quizResult"></div>
+    </div>
+
+    <script>
+        // Quiz functionality
+        document.getElementById('quizBtn').addEventListener('click', function() {
+            const quizContainer = document.getElementById('quizContainer');
+            if (quizContainer.style.display === 'block') {
+                quizContainer.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-question-circle"></i> Take Memory & Storage Quiz';
+            } else {
+                quizContainer.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-times"></i> Close Quiz';
+                window.scrollTo({
+                    top: quizContainer.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        document.getElementById('submitQuiz').addEventListener('click', function() {
+            const answers = {
+                q1: 'b',
+                q2: 'b',
+                q3: 'c',
+                q4: 'c',
+                q5: 'c',
+                q6: 'a'
+            };
+            
+            let score = 0;
+            const totalQuestions = Object.keys(answers).length;
+            
+            for (let question in answers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedOption && selectedOption.value === answers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const resultElement = document.getElementById('quizResult');
+            resultElement.style.display = 'block';
+            
+            let message = '';
+            let resultClass = '';
+            
+            if (percentage === 100) {
+                message = `🎉 Perfect! You scored ${score}/${totalQuestions} (${percentage}%)! 🎉`;
+                resultClass = 'perfect';
+            } else if (percentage >= 80) {
+                message = `👍 Excellent! You scored ${score}/${totalQuestions} (${percentage}%)!`;
+                resultClass = 'good';
+            } else if (percentage >= 60) {
+                message = `😊 Good try! You scored ${score}/${totalQuestions} (${percentage}%). Keep learning!`;
+                resultClass = 'average';
+            } else {
+                message = `📚 You scored ${score}/${totalQuestions} (${percentage}%). Review the material and try again!`;
+                resultClass = 'poor';
+            }
+            
+            resultElement.textContent = message;
+            resultElement.className = `result ${resultClass}`;
+            
+            // Scroll to result
+            resultElement.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

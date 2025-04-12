@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internet and Database Constraints</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #560bad;
+            --white: #ffffff;
+            --gray: #6c757d;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
+            background-color: #f9fafb;
+            background-image: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        header:hover {
+            transform: translateY(-3px);
+        }
+        
+        h1, h2, h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .section {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .section:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-left-color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .constraint {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .constraint:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .constraint h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            margin-top: 0;
+        }
+        
+        .constraint i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .benefit-item {
+            background: linear-gradient(135deg, var(--white), #f0f4f8);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent);
+        }
+        
+        .benefit-item i {
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 1.5rem;
+            min-width: 30px;
+        }
+        
+        .history-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+        
+        .history-item:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .year {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin-right: 1.5rem;
+            min-width: 80px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .event {
+            flex: 1;
+            padding-top: 0.3rem;
+        }
+        
+        .quiz-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin: 3rem auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+        
+        .quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+        
+        .quiz-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .quiz-btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        #quiz-container {
+            display: none;
+            background-color: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .quiz-question {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .quiz-question:last-child {
+            border-bottom: none;
+        }
+        
+        .options {
+            margin-top: 1rem;
+            display: grid;
+            gap: 0.8rem;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+        }
+        
+        .option input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray);
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .option input[type="radio"]:checked {
+            border-color: var(--primary);
+        }
+        
+        .option input[type="radio"]:checked::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+        
+        .option label {
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .option:hover label {
+            color: var(--primary);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 2rem auto 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+        
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .success {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: #0e7490;
+            border: 1px solid rgba(76, 201, 240, 0.5);
+        }
+        
+        .error {
+            background-color: rgba(247, 37, 133, 0.2);
+            color: #9f1239;
+            border: 1px solid rgba(247, 37, 133, 0.5);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .benefits-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .history-item {
+                flex-direction: column;
+            }
+            
+            .year {
+                margin-bottom: 0.5rem;
+                margin-right: 0;
+            }
+            
+            #quiz-container {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Floating animation for header icon */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        header i {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-globe"></i> Introduction to the Internet & Database Constraints</h1>
+        </header>
+        
+        <div class="section">
+            <h2><i class="fas fa-database"></i> Constraints in Databases</h2>
+            <p>Constraints are rules used to enforce data integrity in a database. Common constraints include:</p>
+            
+            <div class="constraint">
+                <h3><i class="fas fa-key"></i> Primary Key Constraint</h3>
+                <p>Ensures that each record has a unique identifier and cannot contain null values.</p>
+            </div>
+            
+            <div class="constraint">
+                <h3><i class="fas fa-link"></i> Foreign Key Constraint</h3>
+                <p>Maintains referential integrity between tables by enforcing relationships between data in different tables.</p>
+            </div>
+            
+            <div class="constraint">
+                <h3><i class="fas fa-check-circle"></i> Check Constraint</h3>
+                <p>Ensures data meets a specific condition or set of conditions before insertion or update.</p>
+            </div>
+            
+            <div class="constraint">
+                <h3><i class="fas fa-clock"></i> Default Constraint</h3>
+                <p>Assigns a default value to a column when no value is explicitly provided during insertion.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-question-circle"></i> What is the Internet?</h2>
+            <p>The Internet is a worldwide network of interconnected computers that communicate using standardized protocols. It consists of multiple small networks connected using networking devices and functions as a single global system.</p>
+            <p>It acts as a window to global information and is often referred to as the "Information Superhighway." The Internet is also known as Interwork or Internetwork, emphasizing its nature as a network of networks.</p>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-star"></i> Benefits of the Internet</h2>
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Instant Data Sharing across the globe</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Fast and reliable Email Communication</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-search"></i>
+                    <span>Powerful Web Searching capabilities</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Real-time Online Chatting & Video Conferencing</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>E-Business & E-Learning opportunities</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-file-download"></i>
+                    <span>Easy File Upload & Download</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-cloud"></i>
+                    <span>Cloud Storage and Computing</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Access to global news and information</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-history"></i> History of the Internet</h2>
+            <div class="history-item">
+                <div class="year">1962</div>
+                <div class="event">J.C.R. Licklider of MIT proposed the concept of a "Galactic Network" for data sharing between computers, which became the foundational idea for the Internet.</div>
+            </div>
+            <div class="history-item">
+                <div class="year">Packet Switching</div>
+                <div class="event">This revolutionary technology, developed by Paul Baran and Donald Davies, became the foundation of today's Internet by allowing efficient data transmission across networks.</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-history"></i> Key Internet Milestones</h2>
+            <div class="history-item">
+                <div class="year">1968</div>
+                <div class="event">The first network of computers was installed at the National Research Laboratory of England, marking early experiments in computer networking.</div>
+            </div>
+            <div class="history-item">
+                <div class="year">1969</div>
+                <div class="event">ARPANET was established by the Pentagon's Advanced Research Projects Agency (ARPA), connecting four university computers. This network (originally called IMP) became the precursor to the modern Internet.</div>
+            </div>
+            <div class="history-item">
+                <div class="year">1972</div>
+                <div class="event">ARPANET had expanded to contain 23 nodes, demonstrating the growing potential of computer networking.</div>
+            </div>
+            <div class="history-item">
+                <div class="year">Early 1970s</div>
+                <div class="event">Raymond Samuel Tomlinson wrote the first email program and introduced the now-ubiquitous @ symbol to separate usernames from host names in email addresses.</div>
+            </div>
+            <div class="history-item">
+                <div class="year">1973</div>
+                <div class="event">The first international node of ARPANET was set up between England and Norway, beginning the global expansion of the network.</div>
+            </div>
+            <div class="history-item">
+                <div class="year">1974</div>
+                <div class="event">Bob Kahn and Vint Cerf published their seminal paper on Transmission Control Protocol (TCP), laying the foundation for modern Internet protocols.</div>
+            </div>
+            <div class="history-item">
+                <div class="year">1983</div>
+                <div class="event">TCP/IP became the standard protocol for ARPANET, marking the official birth of the Internet as we know it today.</div>
+            </div>
+            <div class="history-item">
+                <div class="year">1989</div>
+                <div class="event">Tim Berners-Lee proposed the World Wide Web while working at CERN, creating the system that would make the Internet accessible to the general public.</div>
+            </div>
+        </div>
+        
+        <button class="quiz-btn" id="quizBtn">
+            <i class="fas fa-question-circle"></i> Test Your Knowledge - Take the Quiz!
+        </button>
+        
+        <div id="quiz-container">
+            <h2><i class="fas fa-graduation-cap"></i> Internet and Database Knowledge Quiz</h2>
+            
+            <div class="quiz-question">
+                <p>1. Which database constraint ensures each record has a unique identifier and cannot contain null values?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1a" value="a">
+                        <label for="q1a">Primary Key Constraint</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1b" value="b">
+                        <label for="q1b">Foreign Key Constraint</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1c" value="c">
+                        <label for="q1c">Check Constraint</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1d" value="d">
+                        <label for="q1d">Default Constraint</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p>2. What maintains referential integrity between tables by linking a column in one table to a primary key in another table?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2a" value="a">
+                        <label for="q2a">Primary Key</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2b" value="b">
+                        <label for="q2b">Foreign Key</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2c" value="c">
+                        <label for="q2c">Check Constraint</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2d" value="d">
+                        <label for="q2d">Unique Constraint</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p>3. What is the Internet also known as, emphasizing its nature as a network of networks?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3a" value="a">
+                        <label for="q3a">Interwork</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3b" value="b">
+                        <label for="q3b">Internetwork</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3c" value="c">
+                        <label for="q3c">Both a and b</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3d" value="d">
+                        <label for="q3d">World Wide Web</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p>4. Which of these is NOT considered a primary benefit of the Internet?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4a" value="a">
+                        <label for="q4a">Instant global communication</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4b" value="b">
+                        <label for="q4b">Access to vast information resources</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4c" value="c">
+                        <label for="q4c">Manual typewriter functionality</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4d" value="d">
+                        <label for="q4d">E-commerce capabilities</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p>5. What year did TCP/IP become the standard protocol for ARPANET, marking the official birth of the modern Internet?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5a" value="a">
+                        <label for="q5a">1974</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5b" value="b">
+                        <label for="q5b">1983</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5c" value="c">
+                        <label for="q5c">1969</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5d" value="d">
+                        <label for="q5d">1991</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p>6. Who proposed the World Wide Web while working at CERN in 1989?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6a" value="a">
+                        <label for="q6a">Tim Berners-Lee</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6b" value="b">
+                        <label for="q6b">Vint Cerf</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6c" value="c">
+                        <label for="q6c">Bob Kahn</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6d" value="d">
+                        <label for="q6d">Paul Baran</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submitQuiz">
+                <i class="fas fa-paper-plane"></i> Submit Quiz
+            </button>
+            <div class="result" id="quizResult"></div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quizBtn = document.getElementById('quizBtn');
+            const quizContainer = document.getElementById('quiz-container');
+            const submitBtn = document.getElementById('submitQuiz');
+            const quizResult = document.getElementById('quizResult');
+            
+            // Toggle quiz visibility with animation
+            quizBtn.addEventListener('click', function() {
+                if (quizContainer.style.display === 'block') {
+                    quizContainer.style.animation = 'fadeOut 0.5s ease';
+                    setTimeout(() => {
+                        quizContainer.style.display = 'none';
+                        quizContainer.style.animation = 'fadeIn 0.5s ease';
+                    }, 500);
+                } else {
+                    quizContainer.style.display = 'block';
+                    window.scrollTo({
+                        top: quizContainer.offsetTop - 30,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+            
+            // Submit quiz
+            submitBtn.addEventListener('click', function() {
+                const answers = {
+                    q1: 'a', // Primary Key Constraint
+                    q2: 'b', // Foreign Key
+                    q3: 'c', // Both a and b
+                    q4: 'c', // Manual typewriter functionality
+                    q5: 'b', // 1983
+                    q6: 'a'  // Tim Berners-Lee
+                };
+                
+                let score = 0;
+                const totalQuestions = Object.keys(answers).length;
+                let feedback = '';
+                
+                // Check each question
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (selectedOption && selectedOption.value === answers[`q${i}`]) {
+                        score++;
+                    }
+                }
+                
+                const percentage = (score / totalQuestions) * 100;
+                
+                // Generate feedback based on score
+                if (percentage >= 80) {
+                    feedback = `Excellent! You scored ${score} out of ${totalQuestions} (${percentage.toFixed(1)}%). You really know your stuff!`;
+                } else if (percentage >= 60) {
+                    feedback = `Good job! You scored ${score} out of ${totalQuestions} (${percentage.toFixed(1)}%). You're on the right track!`;
+                } else if (percentage >= 40) {
+                    feedback = `You scored ${score} out of ${totalQuestions} (${percentage.toFixed(1)}%). Keep studying and try again!`;
+                } else {
+                    feedback = `You scored ${score} out of ${totalQuestions} (${percentage.toFixed(1)}%). Review the material and try the quiz again!`;
+                }
+                
+                quizResult.textContent = feedback;
+                quizResult.className = 'result ' + (percentage >= 60 ? 'success' : 'error');
+                quizResult.style.display = 'block';
+                
+                // Scroll to result
+                window.scrollTo({
+                    top: quizResult.offsetTop - 30,
+                    behavior: 'smooth'
+                });
+                
+                // Show confetti for good scores
+                if (percentage >= 80) {
+                    createConfetti();
+                }
+            });
+            
+            // Simple confetti effect
+            function createConfetti() {
+                const colors = ['#4361ee', '#3f37c9', '#4895ef', '#4cc9f0', '#f72585'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-10px';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    const animation = confetti.animate([
+                        { top: '-10px', opacity: 1 },
+                        { top: window.innerHeight + 'px', opacity: 0 }
+                    ], {
+                        duration: 2000 + Math.random() * 3000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
+                    });
+                    
+                    animation.onfinish = () => {
+                        confetti.remove();
+                    };
+                }
+            }
+        });
+    </script>
+</body>
+</html>
